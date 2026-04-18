@@ -14,10 +14,5 @@ export default defineConfig({
   footer: {
     copyright: '',
   },
-  socialLinks: [
-    {
-      icon: '',
-      link: ''
-    },
 ]
 });
