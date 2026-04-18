@@ -36,12 +36,19 @@ const tags = Object.keys(tagCounts).map((tag) => ({
 }));
 
 const posts = [...postCollection]
-  .sort((a, b) => b.data.pubDate!.getTime() - a.data.pubDate!.getTime())
+  .sort((a, b) => {
+    // 【修改点 1】统一获取日期进行比较，确保排序不会因为字段名不同而失效
+    const dateA = (a.data.pubDate || a.data.published || new Date(0)).getTime();
+    const dateB = (b.data.pubDate || b.data.published || new Date(0)).getTime();
+    return dateB - dateA;
+  })
   .map((post) => ({
     id: post.id,
     slug: post.slug,
     url: `/blog/${post.slug}`,
     data: post.data,
+    // 【修改点 2】预处理一个 displayDate，方便下方 HTML 调用
+    displayDate: post.data.pubDate || post.data.published,
   }));
 ---
 
@@ -65,7 +72,8 @@ const posts = [...postCollection]
             <span class="shrink-0">{item.data.title}</span>
             <span class="mx-8 hidden h-px w-full grow border-t border-dashed border-slate6 sm:flex" />
             <span class="shrink-0 text-slate8">
-              {item.data.pubDate?.toLocaleDateString('en-US', {
+              {/* 【修改点 3】使用预处理好的 displayDate */}
+              {item.displayDate?.toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
@@ -75,10 +83,8 @@ const posts = [...postCollection]
         ))
       }
     </div>
-    <!-- <Button className='m-auto mt-6' block> More </Button> -->
   </section>
 
-  <!-- S 标签 -->
   <section class="mb-16">
     <ul class="flex flex-wrap gap-2 text-base text-slate10">
       {
@@ -91,5 +97,4 @@ const posts = [...postCollection]
       }
     </ul>
   </section>
-  <!-- E 标签 -->
-</PageLayout>
+  </PageLayout>

@@ -4,28 +4,37 @@ const postCollection = defineCollection({
   type: 'content',
   schema: z
     .object({
-      /** Title */
+      /** 标题 (必填) */
       title: z.string(),
-      /** Description */
+      /** 描述 */
       description: z.string().optional(),
-      /** Tags */
+      /** 标签 */
       tags: z.array(z.string()).optional(),
-      /** Whether it's a draft */
-      draft: z.boolean().optional(),
-      /** Publish date (required when not draft) */
+      /** 是否为草稿 */
+      draft: z.boolean().optional().default(false),
+      
+      /** 兼容你的日期格式：支持 pubDate 或 published */
       pubDate: z.coerce.date().optional(),
+      published: z.coerce.date().optional(),
+
+      /** 你需要的额外字段 */
+      category: z.string().optional(), // 分类
+      author: z.string().optional(),   // 作者
+      pinned: z.boolean().optional().default(false), // 是否置顶
+      permalink: z.string().optional(), // 自定义链接
+      image: z.string().optional(),     // 封面图
     })
     .refine(
       (data) => {
-        // If it is a draft, then pubDate is not required; otherwise, it is mandatory.
+        // 如果不是草稿，则必须提供 pubDate 或 published 其中之一
         if (data.draft === true) {
           return true;
         }
-        return data.pubDate !== undefined;
+        return data.pubDate !== undefined || data.published !== undefined;
       },
       {
-        message: 'When draft is false, publicDate is required',
-        path: ['publicDate'],
+        message: '当 draft 为 false 时，必须提供 pubDate 或 published 发布日期',
+        path: ['pubDate'],
       },
     ),
 });

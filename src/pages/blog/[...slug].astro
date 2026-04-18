@@ -28,6 +28,8 @@ type Props = CollectionEntry<'post'>;
 
 const post = Astro.props;
 const { Content, remarkPluginFrontmatter, headings } = await post.render();
+
+// 1. 处理最后修改日期
 const lastModifiedDate = dayjs(
   remarkPluginFrontmatter.lastModified
     ? remarkPluginFrontmatter.lastModified
@@ -36,7 +38,10 @@ const lastModifiedDate = dayjs(
 const lastModified = lastModifiedDate.isSame(dayjs(), 'year')
   ? lastModifiedDate.format('MMM DD')
   : lastModifiedDate.format('MMM DD, YYYY');
-const pubDate = dayjs(post.data.pubDate);
+
+// 2. 【核心修改】兼容 pubDate 和 published
+const rawDate = post.data.pubDate || post.data.published;
+const pubDate = dayjs(rawDate);
 const formattedPubDate = pubDate.isSame(dayjs(), 'year')
   ? pubDate.format('MMM DD')
   : pubDate.format('MMM DD, YYYY');
@@ -47,7 +52,8 @@ const formattedPubDate = pubDate.isSame(dayjs(), 'year')
     slot="json-ld"
     title={getFullTitle(post.data.title)}
     description={post.data.description}
-    pubDate={post.data.pubDate}
+    /* 3. 【同步修改】确保 JSON-LD 也能拿到正确的发布日期对象 */
+    pubDate={rawDate}
     lastModified={lastModifiedDate.toDate()}
   />
   <CodeGroupEvent client:only="react" />
@@ -83,16 +89,13 @@ const formattedPubDate = pubDate.isSame(dayjs(), 'year')
       )
     }
   </div>
-  <!-- E 内容 -->
-  <!-- S 目录 -->
   <Toc
     className="fixed top-0 right-0 bottom-0 hidden w-64 xl:block"
     listClassName="px-5 pt-44 pb-14 "
     dataSource={headings}
     client:visible
   />
-  <!-- E 目录 -->
-</PageLayout>
+  </PageLayout>
 
 <script src="//unpkg.com/heti/umd/heti-addon.min.js" is:inline></script>
 <script>
