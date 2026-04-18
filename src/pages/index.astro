@@ -37,7 +37,7 @@ const tags = Object.keys(tagCounts).map((tag) => ({
 
 const posts = [...postCollection]
   .sort((a, b) => {
-    // 【修改点 1】统一获取日期进行比较，确保排序不会因为字段名不同而失效
+    // 统一获取日期进行比较，确保排序不会因为字段名不同而失效
     const dateA = (a.data.pubDate || a.data.published || new Date(0)).getTime();
     const dateB = (b.data.pubDate || b.data.published || new Date(0)).getTime();
     return dateB - dateA;
@@ -45,9 +45,10 @@ const posts = [...postCollection]
   .map((post) => ({
     id: post.id,
     slug: post.slug,
-    url: `/blog/${post.slug}`,
+    // 【核心修改】URL 优先使用自定义的 permalink，确保点击跳转正确
+    url: `/blog/${post.data.permalink || post.slug}`,
     data: post.data,
-    // 【修改点 2】预处理一个 displayDate，方便下方 HTML 调用
+    // 预处理一个 displayDate，方便下方 HTML 调用
     displayDate: post.data.pubDate || post.data.published,
   }));
 ---
@@ -72,7 +73,6 @@ const posts = [...postCollection]
             <span class="shrink-0">{item.data.title}</span>
             <span class="mx-8 hidden h-px w-full grow border-t border-dashed border-slate6 sm:flex" />
             <span class="shrink-0 text-slate8">
-              {/* 【修改点 3】使用预处理好的 displayDate */}
               {item.displayDate?.toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
@@ -97,4 +97,4 @@ const posts = [...postCollection]
       }
     </ul>
   </section>
-  </PageLayout>
+</PageLayout>

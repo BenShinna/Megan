@@ -20,7 +20,7 @@ export async function GET(context) {
   const postItems = await Promise.all(blog
     .filter((post) => !post.data.draft)
     .sort((a, b) => {
-      // 【修改点 1】兼容双日期的排序逻辑
+      // 兼容双日期的排序逻辑
       const dateA = (a.data.pubDate || a.data.published || new Date(0)).getTime();
       const dateB = (b.data.pubDate || b.data.published || new Date(0)).getTime();
       return dateB - dateA;
@@ -30,10 +30,11 @@ export async function GET(context) {
       const htmlStr = await container.renderToString(Content);
 
       return {
-        ...post.data, // 先展开原始数据
-        link: `/blog/${post.slug}/`,
+        ...post.data, 
+        // 【核心修改】链接优先使用 permalink，确保 RSS 订阅跳转路径正确
+        link: `/blog/${post.data.permalink || post.slug}/`,
         title: post.data.title,
-        // 【修改点 2】显式指定 RSS 规范要求的 pubDate 字段
+        // 显式指定 RSS 规范要求的 pubDate 字段
         pubDate: post.data.pubDate || post.data.published, 
         content: sanitizeHtml(htmlStr, {
           allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img'])
@@ -51,7 +52,6 @@ export async function GET(context) {
   }
 
   if(slateConfig.follow) {
-    // 注意：这里原代码有个小瑕疵，closing tag 应该是 </follow_challenge>
     rssOptions.customData = `<follow_challenge>
       <feedId>${slateConfig.follow.feedId}</feedId>
       <userId>${slateConfig.follow.userId}</userId>
