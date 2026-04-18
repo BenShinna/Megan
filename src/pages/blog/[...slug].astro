@@ -19,7 +19,7 @@ export async function getStaticPaths() {
   });
 
   return postEntries.map((post) => ({
-    // 优先使用 permalink 作为 URL 路径，如果没有则回退到文件名 slug
+    // 优先使用 permalink 作为 URL 路径
     params: { slug: post.data.permalink || post.slug },
     props: post,
   }));
@@ -51,7 +51,7 @@ const formattedPubDate = pubDate.isSame(dayjs(), 'year')
 <PageLayout 
   title={post.data.title} 
   description={post.data.description}
-  og_image={post.data.image} 
+  image={post.data.image}
 >
   <ArticleJsonLd
     slot="json-ld"
