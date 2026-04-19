@@ -1,3 +1,41 @@
+import type { SitemapOptions } from '@astrojs/sitemap';
+
+export const languages = ['zh-CN', 'en-US'] as const;
+export type LangType = (typeof languages)[number];
+
+export const theme = ['auto', 'light', 'dark'] as const;
+/** Theme mode */
+export type ThemeMode = (typeof theme)[number];
+
+export interface ThemeOptions {
+  /** Mode */
+  mode: ThemeMode;
+  /** Whether to allow user to change theme */
+  enableUserChange?: boolean;
+}
+
+/** 社交链接配置 */
+export interface SocialLink {
+  icon: SocialLinkIcon;
+  link: string;
+  ariaLabel?: string;
+}
+
+type SocialLinkIcon =
+  | 'dribbble'
+  | 'facebook'
+  | 'figma'
+  | 'github'
+  | 'instagram'
+  | 'link'
+  | 'mail'
+  | 'notion'
+  | 'rss'
+  | 'threads'
+  | 'x'
+  | 'youtube'
+  | { svg: string };
+
 export interface SlateConfig {
   /** Final deployment link */
   site: string;
@@ -8,7 +46,7 @@ export interface SlateConfig {
   /** Avatar */
   avatar?: string;
   /** Avatar Back (flip image) */
-  avatarBack?: string;  // ← 加这一行
+  avatarBack?: string;
   /** Sitemap configuration */
   sitemap?: SitemapOptions;
   /** Website title */
