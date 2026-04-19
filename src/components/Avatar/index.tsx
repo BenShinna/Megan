@@ -16,16 +16,23 @@ export default function Avatar({
 }: AvatarProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();      // 阻止默认行为
+    e.stopPropagation();     // 阻止冒泡到父元素
+    setIsFlipped(!isFlipped);
+  };
+
   return (
     <div 
       className={`avatar-flip ${isFlipped ? 'flipped' : ''}`}
       style={{ width: size, height: size }}
-      onClick={() => setIsFlipped(!isFlipped)}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
       aria-label="切换头像"
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
           setIsFlipped(!isFlipped);
         }
       }}
