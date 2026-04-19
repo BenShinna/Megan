@@ -1,21 +1,26 @@
 ---
 import slateConfig from '~@/slate.config';
+import Avatar from '../Avatar/index.astro';
 
 interface Props {
   avatar?: string;
+  avatarBack?: string;
 }
 
-const { avatar = slateConfig.avatar } = Astro.props;
+const { 
+  avatar = slateConfig.avatar,
+  avatarBack = slateConfig.avatarBack || slateConfig.avatar  // 如果没有背面，默认用正面
+} = Astro.props;
 ---
 
 <header>
-  <div class="mb-9 h-14 w-14 whitespace-nowrap text-[0px]">
-    <img
-      class="block h-full w-full rounded-full border-2 border-white bg-slate2 shadow-xs outline-1 outline-slate3"
-      src={avatar}
+  <a href="/" class="mb-9 block whitespace-nowrap text-[0px]">
+    <Avatar 
+      frontSrc={avatar}
+      backSrc={avatarBack}
       alt={slateConfig.title}
-      draggable="false"
+      size={56}
     />
-    <span>{slateConfig.title}</span>
-  </div>
+    <span class="ml-3 align-middle text-base font-medium text-slate12">{slateConfig.title}</span>
+  </a>
 </header>
