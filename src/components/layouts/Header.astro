@@ -1,6 +1,6 @@
 ---
 import slateConfig from '~@/slate.config';
-import Avatar from '../Avatar/index.astro';
+import Avatar from '../Avatar/index.tsx';
 
 interface Props {
   avatar?: string;
@@ -9,7 +9,7 @@ interface Props {
 
 const { 
   avatar = slateConfig.avatar,
-  avatarBack = slateConfig.avatarBack || slateConfig.avatar  // 如果没有背面，默认用正面
+  avatarBack = slateConfig.avatarBack || slateConfig.avatar
 } = Astro.props;
 ---
 
@@ -20,6 +20,7 @@ const {
       backSrc={avatarBack}
       alt={slateConfig.title}
       size={56}
+      client:load
     />
     <span class="ml-3 align-middle text-base font-medium text-slate12">{slateConfig.title}</span>
   </a>
