@@ -8,8 +8,8 @@ interface Props {
 }
 
 const { 
-  avatar = slateConfig.avatar,
-  avatarBack = slateConfig.avatarBack || slateConfig.avatar
+  avatar = slateConfig.avatar!,           // ← 加 !
+  avatarBack = slateConfig.avatarBack || slateConfig.avatar!  // ← 加 !
 } = Astro.props;
 ---
 
