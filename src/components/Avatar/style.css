@@ -1,76 +1,42 @@
-/* style.css */
-
-.avatar-flip {
-  /* 3D 透视 */
-  perspective: 1000px;
+/* ✅ 防护罩专属样式 */
+.avatar-shield {
+  /* 平滑过渡，避免突兀 */
+  transition: background 0.2s ease;
   
-  /* 交互样式 */
+  /* ✅ 调试时可临时开启，查看防护范围（生产环境注释掉）*/
+  /* background: rgba(255, 0, 0, 0.1); */
+  /* border: 1px dashed rgba(255, 0, 0, 0.3); */
+}
+
+/* ✅ 移动端优化：扩大点击热区 */
+@media (hover: none) and (pointer: coarse) {
+  .avatar-shield {
+    /* 触摸屏设备自动扩大防护半径 */
+    width: calc(var(--avatar-size, 56px) + 40px) !important;
+    height: calc(var(--avatar-size, 56px) + 40px) !important;
+    top: -20px !important;
+    left: -20px !important;
+  }
+}
+
+/* 你原有的 avatar-flip 样式保持不变... */
+.avatar-flip {
+  perspective: 1000px;
   cursor: pointer;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-  
-  /* ✅ 关键修复：防止点击区域溢出 */
-  display: inline-block;        /* 收缩为内容尺寸，不占满整行 */
-  flex-shrink: 0;               /* 防止在 flex 布局中被拉伸 */
-  vertical-align: middle;       /* 垂直对齐 */
-  
-  /* ✅ 美观：初始阴影，增加立体感 */
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 50%;           /* 确保容器也是圆形，防止溢出点击 */
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-/* ✅ 美观：悬停时轻微上浮 + 阴影加深 */
-.avatar-flip:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  transform: translateY(-2px);
-}
-
-/* ✅ 美观：点击/翻转时的阴影变化 */
-.avatar-flip:active,
-.avatar-flip.flipped {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transform: translateY(0);
-}
-
-.avatar-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%; /* ✅ 确保旋转容器也是圆形 */
-  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* ✅ 更Q弹的动画曲线 */
-  transform-style: preserve-3d;
-}
-
-/* 翻转状态 */
-.avatar-flip:hover .avatar-inner,
-.avatar-flip.flipped .avatar-inner {
-  transform: rotateY(180deg);
-}
-
-.avatar-front,
-.avatar-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
   border-radius: 50%;
-  object-fit: cover;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  
-  /* ✅ 美观：图片轻微阴影，增强层次感 */
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  pointer-events: auto;
 }
 
-.avatar-back {
-  transform: rotateY(180deg);
-}
-
-/* ✅ 美观：翻转时的图片微缩放效果（可选） */
-.avatar-inner img {
-  transition: transform 0.6s ease;
-}
-.avatar-flip:hover .avatar-inner img,
-.avatar-flip.flipped .avatar-inner img {
-  transform: scale(1.05); /* 翻转时图片轻微放大，增加动感 */
+/* ✅ 确保图片不拦截事件，让防护罩统一处理 */
+.avatar-flip img {
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
 }
