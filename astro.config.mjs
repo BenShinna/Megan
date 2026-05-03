@@ -1,3 +1,4 @@
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import svgr from 'vite-plugin-svgr';
@@ -18,7 +19,6 @@ import slateConfig from './slate.config';
 
 function computedIntegrations() {
   const result = [astroExpressiveCode(), mdx(), react(), sitemap(slateConfig.sitemap)];
-
   return result;
 }
 
@@ -26,12 +26,16 @@ function generateAstroConfigure() {
   const astroConfig = {
     site: slateConfig.site,
     integrations: computedIntegrations(),
+    image: {
+      service: {
+        entrypoint: 'astro/assets/services/noop',
+      },
+    },
     markdown: {
       remarkPlugins: [
         remarkGemoji,
         remarkMath,
         codeImport,
-        // [codesandbox, { mode: 'button' }],
         remarkBlockContainers,
       ],
       rehypePlugins: [rehypeKatex, rehypeFigure],
@@ -55,5 +59,4 @@ function generateAstroConfigure() {
   return astroConfig;
 }
 
-// https://astro.build/config
 export default defineConfig(generateAstroConfigure());
