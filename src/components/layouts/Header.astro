@@ -13,13 +13,56 @@ const {
 } = Astro.props;
 ---
 
-<header>
-  <div class="mb-9">
-    <Avatar
-      frontSrc={avatar}
-      backSrc={avatarBack}
-      alt={slateConfig.title}
-      size={56}
-    />
+<header id="site-header">
+  <div class="header-inner">
+    <div class="mb-9">
+      <Avatar
+        frontSrc={avatar}
+        backSrc={avatarBack}
+        alt={slateConfig.title}
+        size={56}
+      />
+    </div>
   </div>
 </header>
+
+<style>
+  #site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    transition: backdrop-filter 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .header-inner {
+    padding: 1.5rem 2rem;
+  }
+
+  /* 滚动后的模糊效果 */
+  #site-header.scrolled {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  /* 暗色模式适配 */
+  :global(.dark) #site-header.scrolled {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header');
+
+  function onScroll() {
+    if (window.scrollY > 20) {
+      header?.classList.add('scrolled');
+    } else {
+      header?.classList.remove('scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>

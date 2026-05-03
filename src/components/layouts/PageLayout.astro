@@ -50,6 +50,9 @@ const themeScript = `
     <script set:html={themeScript}></script>
   </head>
   <body class="bg-slate1">
+    <!-- 阅读进度球 -->
+    <div id="progress-ball" aria-hidden="true"></div>
+
     <div class="m-auto flex min-h-dvh max-w-180 flex-col px-6 pb-6 pt-18">
       <slot name="header">
         <Header />
@@ -61,3 +64,36 @@ const themeScript = `
     </div>
   </body>
 </html>
+
+<style is:global>
+  #progress-ball {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 9999;
+    background: linear-gradient(90deg, #6366f1, #a855f7);
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 0.1s linear;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  const ball = document.getElementById('progress-ball');
+
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+    if (ball) {
+      ball.style.transform = `scaleX(${progress})`;
+    }
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+</script>
