@@ -1,23 +1,45 @@
 ---
-import { siteConfig } from '../helpers/config-helper';
+import slateConfig from '~@/slate.config';
+
+interface Props {
+  frontSrc?: string;
+  backSrc?: string;
+  alt?: string;
+  size?: number;
+}
+
+const {
+  frontSrc = slateConfig.avatar!,
+  backSrc = slateConfig.avatarBack || slateConfig.avatar!,
+  alt = slateConfig.title,
+  size = 56,
+} = Astro.props;
+
+const sizePx = `${size}px`;
 ---
 
-<div class="avatar-flip-container">
+<div class="avatar-flip-container" style={`width: ${sizePx}; height: ${sizePx};`}>
   <div class="avatar-flipper">
-    <!-- 正面：头像 -->
+    <!-- 正面 -->
     <div class="avatar-front">
-      <img 
-        src={siteConfig.avatar} 
-        alt="Avatar" 
+      <img
+        src={frontSrc}
+        alt={alt}
         class="avatar-img"
+        width={size}
+        height={size}
+        loading="eager"
       />
     </div>
-    <!-- 背面：备用图片 -->
+    <!-- 背面 -->
     <div class="avatar-back">
-      <img 
-        src={siteConfig.avatarBack || siteConfig.avatar} 
-        alt="Avatar Back" 
+      <img
+        src={backSrc}
+        alt={`${alt} (back)`}
         class="avatar-img"
+        width={size}
+        height={size}
+        loading="lazy"
       />
     </div>
   </div>
@@ -26,9 +48,9 @@ import { siteConfig } from '../helpers/config-helper';
 <style>
   .avatar-flip-container {
     perspective: 1000px;
-    width: 120px;
-    height: 120px;
     cursor: pointer;
+    flex-shrink: 0;
+    display: inline-block;
   }
 
   .avatar-flipper {
@@ -39,28 +61,23 @@ import { siteConfig } from '../helpers/config-helper';
     transform-style: preserve-3d;
   }
 
-  .avatar-flip-container:hover .avatar-flipper {
+  .avatar-flip-container:hover .avatar-flipper,
+  .avatar-flip-container.flipped .avatar-flipper {
     transform: rotateY(180deg);
   }
 
   .avatar-front,
   .avatar-back {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     backface-visibility: hidden;
     border-radius: 50%;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  .avatar-front {
-    z-index: 2;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
   }
 
   .avatar-back {
     transform: rotateY(180deg);
-    z-index: 1;
   }
 
   .avatar-img {
@@ -68,28 +85,15 @@ import { siteConfig } from '../helpers/config-helper';
     height: 100%;
     object-fit: cover;
     display: block;
-  }
-
-  /* 点击翻转（移动端适配） */
-  .avatar-flip-container.flipped .avatar-flipper {
-    transform: rotateY(180deg);
-  }
-
-  /* 响应式尺寸调整 */
-  @media (max-width: 768px) {
-    .avatar-flip-container {
-      width: 96px;
-      height: 96px;
-    }
+    border-radius: 50%;
   }
 </style>
 
 <script>
-  // 移动端点击翻转支持
-  const container = document.querySelector('.avatar-flip-container');
-  if (container) {
+  const containers = document.querySelectorAll('.avatar-flip-container');
+  containers.forEach(container => {
     container.addEventListener('click', () => {
       container.classList.toggle('flipped');
     });
-  }
+  });
 </script>
