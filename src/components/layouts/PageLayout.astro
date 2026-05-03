@@ -50,23 +50,6 @@ const themeScript = `
     <script set:html={themeScript}></script>
   </head>
   <body class="bg-slate1">
-    <!-- 圆形阅读进度球 -->
-    <div id="progress-ball" aria-hidden="true">
-      <svg viewBox="0 0 36 36">
-        <path
-          class="progress-bg"
-          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-        />
-        <path
-          class="progress-bar"
-          id="progress-circle"
-          stroke-dasharray="0, 100"
-          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-        />
-      </svg>
-      <span id="progress-text">0%</span>
-    </div>
-
     <div class="m-auto flex min-h-dvh max-w-180 flex-col px-6 pb-6 pt-18">
       <slot name="header">
         <Header />
@@ -78,76 +61,3 @@ const themeScript = `
     </div>
   </body>
 </html>
-
-<style is:global>
-  #progress-ball {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 44px;
-    height: 44px;
-    z-index: 9999;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #progress-ball svg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-
-  #progress-ball .progress-bg {
-    fill: none;
-    stroke: rgba(128, 128, 128, 0.2);
-    stroke-width: 3;
-  }
-
-  #progress-ball .progress-bar {
-    fill: none;
-    stroke: #6366f1;
-    stroke-width: 3;
-    stroke-linecap: round;
-    transition: stroke-dasharray 0.1s linear;
-  }
-
-  #progress-ball #progress-text {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-color, #333);
-    z-index: 1;
-  }
-
-  :global(.dark) #progress-ball .progress-bar {
-    stroke: #818cf8;
-  }
-
-  :global(.dark) #progress-ball #progress-text {
-    color: #e2e8f0;
-  }
-</style>
-
-<script>
-  const circle = document.getElementById('progress-circle');
-  const text = document.getElementById('progress-text');
-
-  function updateProgress() {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
-    const percent = Math.round(progress * 100);
-
-    if (circle) {
-      circle.setAttribute('stroke-dasharray', `${percent}, 100`);
-    }
-    if (text) {
-      text.textContent = `${percent}%`;
-    }
-  }
-
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
-</script>
