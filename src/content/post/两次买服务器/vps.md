@@ -7,7 +7,7 @@ tags:
   - 日记
 category: 日记
 author: 叶姗
-draft: false
+draft: true
 permalink: vps
 image: ./paid.jpg
 ---
