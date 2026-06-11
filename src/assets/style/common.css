@@ -1,3 +1,22 @@
+/* ==========================================
+   全局字体声明 (作用于主页和所有页面)
+   ========================================== */
+@font-face {
+  font-family: 'StarRail';
+  src: url('/fonts/StarRailttf.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 强制全局所有元素使用星穹铁道字体 */
+html, body, body * {
+  font-family: 'StarRail', system-ui, -apple-system, sans-serif !important;
+}
+
+/* ==========================================
+   下面是 common.css 原来的代码，保持不动
+   ========================================== */
 @import "tailwindcss";
 @import "@radix-ui/colors/gray.css";
 @import "@radix-ui/colors/blue.css";
