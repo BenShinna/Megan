@@ -37,6 +37,7 @@ const tags = Object.keys(tagCounts).map((tag) => ({
 
 const posts = [...postCollection]
   .sort((a, b) => {
+    // 统一获取日期进行比较，确保排序不会因为字段名不同而失效
     const dateA = (a.data.pubDate || a.data.published || new Date(0)).getTime();
     const dateB = (b.data.pubDate || b.data.published || new Date(0)).getTime();
     return dateB - dateA;
@@ -44,50 +45,40 @@ const posts = [...postCollection]
   .map((post) => ({
     id: post.id,
     slug: post.slug,
+    // 【核心修改】URL 优先使用自定义的 permalink，确保点击跳转正确
     url: `/blog/${post.data.permalink || post.slug}`,
-    data: post.data,
+    data: post.data,    // 预处理一个 displayDate，方便下方 HTML 调用
     displayDate: post.data.pubDate || post.data.published,
-  }));---
-
-<!-- 定义专属的脉冲扩散动画，完美复刻你提供的 box-shadow 效果 -->
-<style>
-  .terminal-dot {
-    animation: terminal-pulse 2s ease-in-out infinite;
-  }
-  @keyframes terminal-pulse {
-    0%, 100% {
-      opacity: 1;
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(255, 143, 171, 0.6);
-    }
-    50% {
-      opacity: 0.8;
-      transform: scale(1.05);
-      box-shadow: 0 0 0 6px rgba(255, 143, 171, 0);
-    }
-  }
-</style>
+  }));
+---
 
 <PageLayout>
+  <!-- 修改了这里的布局：改为 flex，让 Search 在桌面端居右，移动端居下，防止遮挡胶囊 -->
   <section class="relative mb-16 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
     
     <!-- 左侧：终端胶囊区域 -->
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-3">
       
-      <!-- 胶囊 1：标题 (完全复刻你的透明背景、淡边框、微弱阴影) -->
-      <div class="inline-flex w-fit items-center gap-[15px] rounded-[50px] border border-[#e8e8e8] bg-transparent px-[30px] py-[12px] font-mono text-lg font-medium text-slate12 shadow-[0_2px_10px_rgba(0,0,0,0.03)] transition-all hover:shadow-md dark:border-white/15 dark:shadow-[0_2px_10px_rgba(0,0,0,0.15)] sm:text-xl">
-        <!-- 粉色圆点 -->
-        <div class="h-3.5 w-3.5 rounded-full bg-[#ff8fab] terminal-dot"></div>
-        <span class="text-[#ff8fab] font-bold">~</span>
+      <!-- 胶囊 1：标题 (粉色圆点) -->
+      <div class="inline-flex w-fit items-center gap-2 rounded-full border border-slate6/30 bg-slate2 px-4 py-2 font-mono text-lg font-semibold text-slate12 shadow-sm transition-all hover:border-slate6/60 hover:shadow-md sm:px-5 sm:py-2.5 sm:text-2xl">
+        <!-- 脉冲扩散圆点 -->
+        <span class="relative flex h-3 w-3 sm:h-3.5 sm:w-3.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 sm:h-3.5 sm:w-3.5 bg-pink-500"></span>
+        </span>
+        <span class="text-pink-500 font-bold">~</span>
         <span class="tracking-wide">{slateConfig.title}</span>
         <span class="text-slate8">$</span>
       </div>
 
-      <!-- 胶囊 2：描述 (保持同样的边框和透明背景质感) -->
-      <div class="inline-flex w-fit items-center gap-[15px] rounded-[50px] border border-[#e8e8e8] bg-transparent px-[30px] py-[12px] font-mono text-base text-slate11 shadow-[0_2px_10px_rgba(0,0,0,0.03)] transition-all hover:shadow-md dark:border-white/15 dark:shadow-[0_2px_10px_rgba(0,0,0,0.15)] sm:text-lg">
-        <!-- 粉色圆点 -->
-        <div class="h-3.5 w-3.5 rounded-full bg-[#ff8fab] terminal-dot"></div>
-        <span class="text-[#ff8fab] font-bold">~</span>
+      <!-- 胶囊 2：描述 (蓝色圆点) -->
+      <div class="inline-flex w-fit items-center gap-2 rounded-full border border-slate6/30 bg-slate2 px-4 py-1.5 font-mono text-sm text-slate11 shadow-sm transition-all hover:border-slate6/60 hover:shadow-md sm:px-5 sm:py-2 sm:text-base">
+        <!-- 脉冲扩散圆点 -->
+        <span class="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-blue-500"></span>
+        </span>
+        <span class="text-blue-500 font-bold">~</span>
         <span class="tracking-wide">{slateConfig.description}</span>
         <span class="text-slate8">$</span>
       </div>
@@ -96,7 +87,8 @@ const posts = [...postCollection]
 
     <!-- 右侧：搜索框 (桌面端在右，移动端在下) -->
     <div class="w-full sm:w-auto sm:min-w-[240px]">
-      <Search client:only="react" className="w-full sm:w-auto" />    </div>
+      <Search client:only="react" className="w-full sm:w-auto" />
+    </div>
 
   </section>
 
@@ -104,8 +96,7 @@ const posts = [...postCollection]
     <div class="text-base text-slate12">
       {
         posts.map((item) => (
-          <a class="flex cursor-pointer flex-col justify-between rounded-lg py-2.5 transition-all active:scale-[0.995] active:bg-slate4 sm:flex-row sm:items-center sm:px-2 sm:hover:bg-slate3" href={item.url} title={item.data.title}>
-            <span class="shrink-0">{item.data.title}</span>
+          <a class="flex cursor-pointer flex-col justify-between rounded-lg py-2.5 transition-all active:scale-[0.995] active:bg-slate4 sm:flex-row sm:items-center sm:px-2 sm:hover:bg-slate3" href={item.url} title={item.data.title}>            <span class="shrink-0">{item.data.title}</span>
             <span class="mx-8 hidden h-px w-full grow border-t border-dashed border-slate6 sm:flex" />
             <span class="shrink-0 text-slate8">
               {item.displayDate?.toLocaleDateString('en-US', {
