@@ -45,25 +45,27 @@ const posts = [...postCollection]
     
     <div class="flex flex-col gap-3">
       
-      <!-- 终端提示符胶囊 1：标题 -->
-      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-border/40 bg-muted/20 px-3.5 py-1.5 font-mono text-xs sm:text-sm">
-        <span class="relative flex h-2 w-2">          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60"></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+      <!--  终端胶囊 1：标题 (粉色圆点 + 发光效果) -->
+      <div class="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-4 py-1.5 font-mono text-sm shadow-sm backdrop-blur-md transition-all hover:shadow-md dark:border-slate-700/80 dark:bg-slate-900/70 sm:text-base">
+        <!-- 粉色脉冲圆点 -->        <span class="relative flex h-2.5 w-2.5">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-pink-400 opacity-75"></span>
+          <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.6)]"></span>
         </span>
-        <span class="text-accent">~</span>
-        <span class="font-medium">{slateConfig.title}</span>
-        <span class="opacity-40">$</span>
+        <span class="text-pink-500 font-bold">~</span>
+        <span class="font-medium text-slate-800 dark:text-slate-200">{slateConfig.title}</span>
+        <span class="text-slate-400 dark:text-slate-500">$</span>
       </div>
 
-      <!-- 终端提示符胶囊 2：描述 -->
-      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-border/40 bg-muted/20 px-3.5 py-1.5 font-mono text-xs sm:text-sm">
+      <!--  终端胶囊 2：描述 (蓝色圆点 + 发光效果) -->
+      <div class="inline-flex items-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-4 py-1.5 font-mono text-xs shadow-sm backdrop-blur-md transition-all hover:shadow-md dark:border-slate-700/80 dark:bg-slate-900/70 sm:text-sm">
+        <!-- 蓝色脉冲圆点 -->
         <span class="relative flex h-2 w-2">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-60"></span>
-          <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
         </span>
-        <span class="text-blue-500">~</span>
-        <span class="opacity-90">{slateConfig.description}</span>
-        <span class="opacity-40">$</span>
+        <span class="text-blue-500 font-bold">~</span>
+        <span class="text-slate-600 dark:text-slate-400">{slateConfig.description}</span>
+        <span class="text-slate-400 dark:text-slate-500">$</span>
       </div>
 
     </div>
@@ -94,9 +96,9 @@ const posts = [...postCollection]
   <section class="mb-16">
     <ul class="flex flex-wrap gap-2 text-base text-slate10">
       {
-        tags.map(({ name, count }) => {
-          const isAllTag = name === i18next.t('common.all');
-                    return (
+        tags.map(({ name, count }) => {          const isAllTag = name === i18next.t('common.all');
+          
+          return (
             <li>
               <a 
                 href={isAllTag ? '/' : `/tags/${encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-'))}`}
