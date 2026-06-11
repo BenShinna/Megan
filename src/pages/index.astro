@@ -45,27 +45,25 @@ const posts = [...postCollection]
     
     <div class="flex flex-col gap-3">
       
-      <!--  胶囊 1：标题 (液态玻璃效果 - 粉色主题) -->
-      <div class="inline-flex w-fit items-center gap-2.5 rounded-2xl border border-white/40 bg-white/40 px-5 py-2.5 font-mono text-lg font-semibold text-slate12 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)] backdrop-blur-xl transition-all hover:bg-white/60 hover:shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:border-white/10 dark:bg-black/30 dark:text-slate2 dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] dark:hover:bg-black/50 sm:text-2xl">
-        <!-- 脉冲圆点 -->        <span class="relative flex h-3 w-3 sm:h-3.5 sm:w-3.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-3 w-3 sm:h-3.5 sm:w-3.5 bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.6)]"></span>
+      <!-- 终端提示符胶囊 1：标题 -->
+      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-border/40 bg-muted/20 px-3.5 py-1.5 font-mono text-xs sm:text-sm">
+        <span class="relative flex h-2 w-2">          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
         </span>
-        <span class="text-pink-500 font-bold drop-shadow-sm">~</span>
-        <span class="tracking-wide">{slateConfig.title}</span>
-        <span class="text-slate8 dark:text-slate10 font-light">$</span>
+        <span class="text-accent">~</span>
+        <span class="font-medium">{slateConfig.title}</span>
+        <span class="opacity-40">$</span>
       </div>
 
-      <!-- 🧊 胶囊 2：描述 (液态玻璃效果 - 蓝色主题) -->
-      <div class="inline-flex w-fit items-center gap-2.5 rounded-2xl border border-white/40 bg-white/40 px-5 py-2 font-mono text-sm text-slate11 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)] backdrop-blur-xl transition-all hover:bg-white/60 hover:shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:border-white/10 dark:bg-black/30 dark:text-slate3 dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] dark:hover:bg-black/50 sm:text-base sm:py-2.5">
-        <!-- 脉冲圆点 -->
-        <span class="relative flex h-2.5 w-2.5 sm:h-3 sm:w-3">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
+      <!-- 终端提示符胶囊 2：描述 -->
+      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-border/40 bg-muted/20 px-3.5 py-1.5 font-mono text-xs sm:text-sm">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-60"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
         </span>
-        <span class="text-blue-500 font-bold drop-shadow-sm">~</span>
-        <span class="tracking-wide">{slateConfig.description}</span>
-        <span class="text-slate8 dark:text-slate10 font-light">$</span>
+        <span class="text-blue-500">~</span>
+        <span class="opacity-90">{slateConfig.description}</span>
+        <span class="opacity-40">$</span>
       </div>
 
     </div>
@@ -96,10 +94,9 @@ const posts = [...postCollection]
   <section class="mb-16">
     <ul class="flex flex-wrap gap-2 text-base text-slate10">
       {
-        tags.map(({ name, count }) => {          // 判断是否是 "All" 标签（包括翻译后的"全部"）
+        tags.map(({ name, count }) => {
           const isAllTag = name === i18next.t('common.all');
-          
-          return (
+                    return (
             <li>
               <a 
                 href={isAllTag ? '/' : `/tags/${encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-'))}`}
