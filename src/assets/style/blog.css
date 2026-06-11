@@ -1,6 +1,21 @@
+/* ==========================================
+   1. 声明星穹铁道自定义字体
+   ========================================== */
+@font-face {
+  font-family: 'StarRail';
+  /* 路径对应 public/fonts/ 目录 */
+  src: url('/fonts/StarRailttf.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* 优化加载体验，防止文字闪烁 */
+}
+
 @reference "./common.css";
 
 .blog-content {
+  /* 2. 在这里全局应用字体，内部的 h1, p, li 等都会自动继承 */
+  font-family: 'StarRail', system-ui, -apple-system, sans-serif;
+  
   @apply mb-16;
 
   h1 {
@@ -33,7 +48,6 @@
   img {
     @apply border-slate6 mx-auto my-8 w-full rounded-2xl border;
   }
-
   code {
     @apply border-slate4 bg-slate3 text-slate11 mx-0.5 rounded-lg border p-0.5 px-1 text-base;
   }
@@ -82,7 +96,6 @@
       @apply border-slate4 border-b px-4 py-3;
     }
   }
-
   blockquote {
     @apply border-slate4 my-6 border-l-2 pl-4;
 
@@ -132,8 +145,7 @@
   }
 
   .heti-spacing-start {
-    @apply me-[0.25em];
-  }
+    @apply me-[0.25em];  }
 
   .heti-spacing-end {
     @apply ms-[0.25em];
@@ -182,8 +194,7 @@
   /* 六张图片分栏 */
   .rehype-figure-container:has(> .rehype-figure:nth-child(6)) {
     column-count: 4;
-    column-gap: 8px;
-    @apply my-1.5;
+    column-gap: 8px;    @apply my-1.5;
   }
 
   /* 处理图片显示 */
