@@ -53,14 +53,19 @@ const posts = [...postCollection]
 ---
 
 <PageLayout>
-  <!-- 修改了这里的布局：改为 flex，让 Search 在桌面端居右，移动端居下，防止遮挡胶囊 -->
-  <section class="relative mb-16 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+  <!-- 
+    修改说明：
+    1. 外层 section 改为 flex-col，并在 sm (桌面端) 改为 row，让 Search 在右边。
+    2. items-center 让手机端胶囊居中，sm:items-start 让电脑端胶囊靠左。
+  -->
+  <section class="relative mb-16 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between">
     
     <!-- 左侧：终端胶囊区域 -->
-    <div class="flex flex-col gap-3">
+    <!-- 增加 w-full sm:w-auto 确保手机端占满宽度以便居中，电脑端自适应 -->
+    <div class="flex w-full flex-col items-center gap-3 sm:w-auto sm:items-start">
       
       <!-- 胶囊 1：标题 (粉色圆点) -->
-      <div class="inline-flex w-fit items-center gap-2 rounded-full border border-slate6/30 bg-slate2 px-4 py-2 font-mono text-lg font-semibold text-slate12 shadow-sm transition-all hover:border-slate6/60 hover:shadow-md sm:px-5 sm:py-2.5 sm:text-2xl">
+      <div class="inline-flex w-fit items-center gap-2 rounded-full border border-slate6/30 bg-slate2 px-5 py-2 font-mono text-lg font-semibold text-slate12 shadow-sm transition-all hover:border-slate6/60 hover:shadow-md sm:text-2xl sm:px-6 sm:py-2.5">
         <!-- 脉冲扩散圆点 -->
         <span class="relative flex h-3 w-3 sm:h-3.5 sm:w-3.5">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
@@ -85,18 +90,19 @@ const posts = [...postCollection]
 
     </div>
 
-    <!-- 右侧：搜索框 (桌面端在右，移动端在下) -->
+    <!-- 右侧：搜索框 -->
+    <!-- 手机端宽度100%，电脑端固定最小宽度 -->
     <div class="w-full sm:w-auto sm:min-w-[240px]">
       <Search client:only="react" className="w-full sm:w-auto" />
     </div>
 
   </section>
-
   <section class="mb-16">
     <div class="text-base text-slate12">
       {
         posts.map((item) => (
-          <a class="flex cursor-pointer flex-col justify-between rounded-lg py-2.5 transition-all active:scale-[0.995] active:bg-slate4 sm:flex-row sm:items-center sm:px-2 sm:hover:bg-slate3" href={item.url} title={item.data.title}>            <span class="shrink-0">{item.data.title}</span>
+          <a class="flex cursor-pointer flex-col justify-between rounded-lg py-2.5 transition-all active:scale-[0.995] active:bg-slate4 sm:flex-row sm:items-center sm:px-2 sm:hover:bg-slate3" href={item.url} title={item.data.title}>
+            <span class="shrink-0">{item.data.title}</span>
             <span class="mx-8 hidden h-px w-full grow border-t border-dashed border-slate6 sm:flex" />
             <span class="shrink-0 text-slate8">
               {item.displayDate?.toLocaleDateString('en-US', {
