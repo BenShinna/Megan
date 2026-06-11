@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import i18next from '@/i18n';
 import Search from '@/components/search';
 import PageLayout from '@/components/layouts/PageLayout.astro';
-// import Button from '@/components/button';
 import slateConfig from '~@/slate.config';
 
 const postCollection = await getCollection('post', ({ data }) => {
@@ -16,7 +15,6 @@ const tagCounts = postCollection.reduce<Record<string, number>>(
     if (!postTags || !postTags.length) return res;
     postTags.forEach((tag) => {
       if (tag.trim() === '') return;
-
       if (res[tag]) {
         res[tag]++;
       } else {
@@ -37,7 +35,6 @@ const tags = Object.keys(tagCounts).map((tag) => ({
 
 const posts = [...postCollection]
   .sort((a, b) => {
-    // 统一获取日期进行比较，确保排序不会因为字段名不同而失效
     const dateA = (a.data.pubDate || a.data.published || new Date(0)).getTime();
     const dateB = (b.data.pubDate || b.data.published || new Date(0)).getTime();
     return dateB - dateA;
@@ -45,58 +42,42 @@ const posts = [...postCollection]
   .map((post) => ({
     id: post.id,
     slug: post.slug,
-    // 【核心修改】URL 优先使用自定义的 permalink，确保点击跳转正确
     url: `/blog/${post.data.permalink || post.slug}`,
-    data: post.data,    // 预处理一个 displayDate，方便下方 HTML 调用
+    data: post.data,
     displayDate: post.data.pubDate || post.data.published,
   }));
 ---
-
 <PageLayout>
-  <!-- 
-    修改说明：
-    1. 外层 section 改为 flex-col，并在 sm (桌面端) 改为 row，让 Search 在右边。
-    2. items-center 让手机端胶囊居中，sm:items-start 让电脑端胶囊靠左。
-  -->
-  <section class="relative mb-16 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between">
+  <section class="relative mb-8 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between">
     
     <!-- 左侧：终端胶囊区域 -->
-    <!-- 增加 w-full sm:w-auto 确保手机端占满宽度以便居中，电脑端自适应 -->
-    <div class="flex w-full flex-col items-center gap-3 sm:w-auto sm:items-start">
+    <div class="flex w-full flex-col items-center gap-4 sm:w-auto sm:items-start">
       
-      <!-- 胶囊 1：标题 (粉色圆点) -->
-      <div class="inline-flex w-fit items-center gap-2 rounded-full border border-slate6/30 bg-slate2 px-5 py-2 font-mono text-lg font-semibold text-slate12 shadow-sm transition-all hover:border-slate6/60 hover:shadow-md sm:text-2xl sm:px-6 sm:py-2.5">
-        <!-- 脉冲扩散圆点 -->
-        <span class="relative flex h-3 w-3 sm:h-3.5 sm:w-3.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-3 w-3 sm:h-3.5 sm:w-3.5 bg-pink-500"></span>
-        </span>
-        <span class="text-pink-500 font-bold">~</span>
-        <span class="tracking-wide">{slateConfig.title}</span>
-        <span class="text-slate8">$</span>
+      <!-- 胶囊 1：标题 -->
+      <div class="terminal-capsule">
+        <div class="terminal-dot"></div>
+        <span class="terminal-tilde">~</span>
+        <span class="terminal-command">{slateConfig.title}</span>
+        <span class="terminal-dollar">$</span>
       </div>
 
-      <!-- 胶囊 2：描述 (蓝色圆点) -->
-      <div class="inline-flex w-fit items-center gap-2 rounded-full border border-slate6/30 bg-slate2 px-4 py-1.5 font-mono text-sm text-slate11 shadow-sm transition-all hover:border-slate6/60 hover:shadow-md sm:px-5 sm:py-2 sm:text-base">
-        <!-- 脉冲扩散圆点 -->
-        <span class="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-blue-500"></span>
-        </span>
-        <span class="text-blue-500 font-bold">~</span>
-        <span class="tracking-wide">{slateConfig.description}</span>
-        <span class="text-slate8">$</span>
+      <!-- 胶囊 2：描述 -->
+      <div class="terminal-capsule terminal-capsule--desc">
+        <div class="terminal-dot terminal-dot--blue"></div>
+        <span class="terminal-tilde terminal-tilde--blue">~</span>
+        <span class="terminal-command">{slateConfig.description}</span>
+        <span class="terminal-dollar">$</span>
       </div>
 
     </div>
 
     <!-- 右侧：搜索框 -->
-    <!-- 手机端宽度100%，电脑端固定最小宽度 -->
     <div class="w-full sm:w-auto sm:min-w-[240px]">
       <Search client:only="react" className="w-full sm:w-auto" />
     </div>
 
   </section>
+
   <section class="mb-16">
     <div class="text-base text-slate12">
       {
@@ -116,7 +97,6 @@ const posts = [...postCollection]
       }
     </div>
   </section>
-
   <section class="mb-16">
     <ul class="flex flex-wrap gap-2 text-base text-slate10">
       {
@@ -130,3 +110,118 @@ const posts = [...postCollection]
     </ul>
   </section>
 </PageLayout>
+
+<style>
+  /* ===== 终端胶囊样式 - 完全还原 HTML 代码 ===== */
+  
+  .terminal-capsule {
+    background: transparent;
+    border: 1px solid #e8e8e8;
+    border-radius: 50px;
+    padding: 12px 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s ease;
+  }
+
+  .terminal-capsule:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  }
+
+  /* 描述胶囊稍小 */
+  .terminal-capsule--desc {
+    padding: 10px 24px;
+    gap: 12px;
+  }
+
+  /* 粉色圆点 - 带脉冲动画 */
+  .terminal-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ff8fab;
+    position: relative;
+    animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;  }
+
+  /* 蓝色圆点 */
+  .terminal-dot--blue {
+    background: #60a5fa;
+    animation-name: pulse-blue;
+  }
+
+  /* 粉色脉冲动画 */
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(255, 143, 171, 0.6);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+      box-shadow: 0 0 0 6px rgba(255, 143, 171, 0);
+    }
+  }
+
+  /* 蓝色脉冲动画 */
+  @keyframes pulse-blue {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.6);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+      box-shadow: 0 0 0 6px rgba(96, 165, 250, 0);
+    }
+  }
+
+  /* 波浪号 */
+  .terminal-tilde {
+    color: #ff8fab;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .terminal-tilde--blue {
+    color: #60a5fa;
+  }
+
+  /* 命令文本 */
+  .terminal-command {
+    color: #333;    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* 描述胶囊文字稍小 */
+  .terminal-capsule--desc .terminal-command {
+    font-size: 15px;
+  }
+
+  /* 美元符号 */
+  .terminal-dollar {
+    color: #999;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .terminal-capsule--desc .terminal-dollar {
+    font-size: 15px;
+  }
+
+  /* 深色模式适配 */
+  :global(.dark) .terminal-capsule {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  :global(.dark) .terminal-command {
+    color: #e0e0e0;
+  }
+</style>
