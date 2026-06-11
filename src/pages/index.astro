@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import i18next from '@/i18n';
 import Search from '@/components/search';
 import PageLayout from '@/components/layouts/PageLayout.astro';
+// import Button from '@/components/button';
 import slateConfig from '~@/slate.config';
 
 const postCollection = await getCollection('post', ({ data }) => {
@@ -15,6 +16,7 @@ const tagCounts = postCollection.reduce<Record<string, number>>(
     if (!postTags || !postTags.length) return res;
     postTags.forEach((tag) => {
       if (tag.trim() === '') return;
+
       if (res[tag]) {
         res[tag]++;
       } else {
@@ -45,33 +47,37 @@ const posts = [...postCollection]
     url: `/blog/${post.data.permalink || post.slug}`,
     data: post.data,
     displayDate: post.data.pubDate || post.data.published,
-  }));
----
+  }));---
+
 <PageLayout>
   <section class="relative mb-8 flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-between">
     
-    <!-- 左侧：终端胶囊区域 -->
-    <div class="flex w-full flex-col items-center gap-4 sm:w-auto sm:items-start">
+    <div class="flex w-full flex-col items-center gap-4 sm:w-auto sm:items-start sm:gap-5">
       
-      <!-- 胶囊 1：标题 -->
-      <div class="terminal-capsule">
-        <div class="terminal-dot"></div>
-        <span class="terminal-tilde">~</span>
-        <span class="terminal-command">{slateConfig.title}</span>
-        <span class="terminal-dollar">$</span>
+      <!-- 胶囊 1：标题 (粉色 #ff8fab + 雷达扩散动画) -->
+      <div class="inline-flex items-center gap-[15px] rounded-[50px] border border-[#e8e8e8] bg-transparent px-[30px] py-[12px] shadow-[0_2px_10px_rgba(0,0,0,0.03)] transition-all hover:shadow-[0_4px_15px_rgba(0,0,0,0.06)] sm:text-lg font-mono">
+        <span class="relative flex h-[14px] w-[14px]">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ff8fab] opacity-75"></span>
+          <span class="relative inline-flex h-[14px] w-[14px] rounded-full bg-[#ff8fab]"></span>
+        </span>
+        <span class="text-[#ff8fab] font-[500] text-[18px]">~</span>
+        <span class="text-[#333] font-[500] text-[18px] tracking-[0.5px]">{slateConfig.title}</span>
+        <span class="text-[#999] font-[500] text-[18px]">$</span>
       </div>
 
-      <!-- 胶囊 2：描述 -->
-      <div class="terminal-capsule terminal-capsule--desc">
-        <div class="terminal-dot terminal-dot--blue"></div>
-        <span class="terminal-tilde terminal-tilde--blue">~</span>
-        <span class="terminal-command">{slateConfig.description}</span>
-        <span class="terminal-dollar">$</span>
+      <!-- 胶囊 2：描述 (蓝色 + 雷达扩散动画) -->
+      <div class="inline-flex items-center gap-[10px] rounded-[50px] border border-[#e8e8e8] bg-transparent px-[20px] py-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.03)] transition-all hover:shadow-[0_4px_15px_rgba(0,0,0,0.06)] sm:text-base font-mono">
+        <span class="relative flex h-[10px] w-[10px]">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4facfe] opacity-75"></span>
+          <span class="relative inline-flex h-[10px] w-[10px] rounded-full bg-[#4facfe]"></span>
+        </span>
+        <span class="text-[#4facfe] font-[500] text-[16px]">~</span>
+        <span class="text-[#333] font-[500] text-[16px] tracking-[0.5px]">{slateConfig.description}</span>
+        <span class="text-[#999] font-[500] text-[16px]">$</span>
       </div>
 
     </div>
 
-    <!-- 右侧：搜索框 -->
     <div class="w-full sm:w-auto sm:min-w-[240px]">
       <Search client:only="react" className="w-full sm:w-auto" />
     </div>
@@ -90,13 +96,13 @@ const posts = [...postCollection]
                 year: 'numeric',
                 month: 'short',
                 day: 'numeric',
-              })}
-            </span>
+              })}            </span>
           </a>
         ))
       }
     </div>
   </section>
+
   <section class="mb-16">
     <ul class="flex flex-wrap gap-2 text-base text-slate10">
       {
@@ -110,118 +116,3 @@ const posts = [...postCollection]
     </ul>
   </section>
 </PageLayout>
-
-<style>
-  /* ===== 终端胶囊样式 - 完全还原 HTML 代码 ===== */
-  
-  .terminal-capsule {
-    background: transparent;
-    border: 1px solid #e8e8e8;
-    border-radius: 50px;
-    padding: 12px 30px;
-    display: inline-flex;
-    align-items: center;
-    gap: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-    font-family: 'Courier New', monospace;
-    transition: all 0.3s ease;
-  }
-
-  .terminal-capsule:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-  }
-
-  /* 描述胶囊稍小 */
-  .terminal-capsule--desc {
-    padding: 10px 24px;
-    gap: 12px;
-  }
-
-  /* 粉色圆点 - 带脉冲动画 */
-  .terminal-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #ff8fab;
-    position: relative;
-    animation: pulse 2s ease-in-out infinite;
-    flex-shrink: 0;  }
-
-  /* 蓝色圆点 */
-  .terminal-dot--blue {
-    background: #60a5fa;
-    animation-name: pulse-blue;
-  }
-
-  /* 粉色脉冲动画 */
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 1;
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(255, 143, 171, 0.6);
-    }
-    50% {
-      opacity: 0.8;
-      transform: scale(1.05);
-      box-shadow: 0 0 0 6px rgba(255, 143, 171, 0);
-    }
-  }
-
-  /* 蓝色脉冲动画 */
-  @keyframes pulse-blue {
-    0%, 100% {
-      opacity: 1;
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.6);
-    }
-    50% {
-      opacity: 0.8;
-      transform: scale(1.05);
-      box-shadow: 0 0 0 6px rgba(96, 165, 250, 0);
-    }
-  }
-
-  /* 波浪号 */
-  .terminal-tilde {
-    color: #ff8fab;
-    font-size: 18px;
-    font-weight: 500;
-  }
-
-  .terminal-tilde--blue {
-    color: #60a5fa;
-  }
-
-  /* 命令文本 */
-  .terminal-command {
-    color: #333;    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-  }
-
-  /* 描述胶囊文字稍小 */
-  .terminal-capsule--desc .terminal-command {
-    font-size: 15px;
-  }
-
-  /* 美元符号 */
-  .terminal-dollar {
-    color: #999;
-    font-size: 18px;
-    font-weight: 500;
-  }
-
-  .terminal-capsule--desc .terminal-dollar {
-    font-size: 15px;
-  }
-
-  /* 深色模式适配 */
-  :global(.dark) .terminal-capsule {
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  }
-
-  :global(.dark) .terminal-command {
-    color: #e0e0e0;
-  }
-</style>
