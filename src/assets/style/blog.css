@@ -1,3 +1,6 @@
+/* ==========================================
+   1. 声明自定义字体
+   ========================================== */
 @font-face {
   font-family: 'StarRail';
   src: url('/fonts/StarRailttf.otf') format('opentype');
@@ -6,12 +9,31 @@
   font-display: swap;
 }
 
-html, body, .blog-content, .home, .post-list, article, .prose {
+/* ==========================================
+   2. Tailwind v4 专属：覆盖默认字体变量 (核心！)
+   这会让主页里所有使用了 font-sans 等 Tailwind 类的地方自动生效
+   ========================================== */
+@theme {
+  --font-sans: 'StarRail', system-ui, -apple-system, sans-serif;
+  --font-serif: 'StarRail', system-ui, -apple-system, sans-serif;
+}
+
+/* ==========================================
+   3. CSS 暴力兜底：强制覆盖所有元素
+   无论主页用了什么奇怪的 class，这招都能强制生效
+   ========================================== */
+html, body, body * {
   font-family: 'StarRail', system-ui, -apple-system, sans-serif !important;
 }
 
+/* ==========================================
+   4. 引入 Tailwind 基础
+   ========================================== */
 @reference "./common.css";
 
+/* ==========================================
+   5. 博客内容区域样式 (保持扁平化，防报错)
+   ========================================== */
 .blog-content {
   @apply mb-16;
   font-family: 'StarRail', system-ui, -apple-system, sans-serif !important;
@@ -26,7 +48,6 @@ html, body, .blog-content, .home, .post-list, article, .prose {
   code { @apply border-slate4 bg-slate3 text-slate11 mx-0.5 rounded-lg border p-0.5 px-1 text-base; }
   .code { @apply text-wrap; }
   .katex-html { @apply hidden; }
-
   .block-default { @apply my-6 rounded-xl p-4; font-family: inherit; }
   .block-default p { @apply text-slate12 my-0 text-base leading-relaxed; font-family: inherit; }
 
@@ -48,6 +69,7 @@ html, body, .blog-content, .home, .post-list, article, .prose {
   ul { @apply text-slate11 mt-2 mb-6 list-disc pl-4 text-base leading-relaxed; font-family: inherit; }
   .task-list-item { @apply list-none; }
   ul li::marker { @apply text-slate8; }
+
   ol { @apply text-slate11 mt-2 mb-6 list-decimal pl-6 text-base leading-relaxed; font-family: inherit; }
   ol li::marker { @apply text-slate8; }
   li { @apply text-slate11 text-base leading-relaxed; font-family: inherit; }
@@ -74,8 +96,7 @@ html, body, .blog-content, .home, .post-list, article, .prose {
   .rehype-figure-container:has(> .rehype-figure:nth-child(5)) { column-count: 5; column-gap: 8px; }
   .rehype-figure-container:has(> .rehype-figure:nth-child(6)) { column-count: 3; column-gap: 8px; }
 
-  .rehype-figure-container:has(> .rehype-figure:nth-child(2)) .rehype-figure,
-  .rehype-figure-container:has(> .rehype-figure:nth-child(3)) .rehype-figure,
+  .rehype-figure-container:has(> .rehype-figure:nth-child(2)) .rehype-figure,  .rehype-figure-container:has(> .rehype-figure:nth-child(3)) .rehype-figure,
   .rehype-figure-container:has(> .rehype-figure:nth-child(4)) .rehype-figure,
   .rehype-figure-container:has(> .rehype-figure:nth-child(5)) .rehype-figure,
   .rehype-figure-container:has(> .rehype-figure:nth-child(6)) .rehype-figure {
@@ -97,6 +118,7 @@ html, body, .blog-content, .home, .post-list, article, .prose {
   .rehype-figure-container:has(> .rehype-figure:nth-child(6)) img {
     @apply m-0 border-slate6 rounded-2xl border;
   }
+
   .rehype-figure-container:has(> .rehype-figure:nth-child(6)) .rehype-figure { @apply mb-2; }
 
   @media (max-width: 768px) {
