@@ -1,6 +1,3 @@
-/* ==========================================
-   1. 声明自定义字体
-   ========================================== */
 @font-face {
   font-family: 'StarRail';
   src: url('/fonts/StarRailttf.otf') format('opentype');
@@ -9,213 +6,88 @@
   font-display: swap;
 }
 
-/* ==========================================
-   2. 全局强制应用字体 (解决主页不生效问题)
-   ========================================== */
-html, 
-body, 
-.blog-content, 
-.home, 
-.home-content, 
-.post-list, 
-article, 
-.prose {
+html, body, .blog-content, .home, .post-list, article, .prose {
   font-family: 'StarRail', system-ui, -apple-system, sans-serif !important;
 }
 
-/* Tailwind v4 专用引入语法 */
 @reference "./common.css";
 
-/* ==========================================
-   3. 博客内容区域样式
-   ========================================== */
 .blog-content {
   @apply mb-16;
   font-family: 'StarRail', system-ui, -apple-system, sans-serif !important;
 
-  h1 {
-    @apply text-slate12 mb-2 text-4xl leading-normal font-bold;
-    font-family: inherit;
-  }
-  h2 {
-    @apply text-slate12 mt-8 mb-2 text-3xl leading-normal font-semibold;
-    font-family: inherit;
-  }
-  h3 {
-    @apply text-slate12 my-2 text-2xl leading-normal font-semibold;
-    font-family: inherit;
-  }
-  h4 {
-    @apply text-slate12 my-2 text-base leading-normal font-semibold;
-    font-family: inherit;  }
-  p {
-    @apply text-slate12 my-6 mt-4 text-base leading-relaxed;
-    font-family: inherit;
-  }
-  a {
-    @apply text-indigo11 decoration-indigo6 underline-offset-4 transition-all hover:underline;
-    font-family: inherit;
-  }
+  h1 { @apply text-slate12 mb-2 text-4xl leading-normal font-bold; font-family: inherit; }
+  h2 { @apply text-slate12 mt-8 mb-2 text-3xl leading-normal font-semibold; font-family: inherit; }
+  h3 { @apply text-slate12 my-2 text-2xl leading-normal font-semibold; font-family: inherit; }
+  h4 { @apply text-slate12 my-2 text-base leading-normal font-semibold; font-family: inherit; }
+  p { @apply text-slate12 my-6 mt-4 text-base leading-relaxed; font-family: inherit; }
+  a { @apply text-indigo11 decoration-indigo6 underline-offset-4 transition-all hover:underline; font-family: inherit; }
+  img { @apply border-slate6 mx-auto my-8 w-full rounded-2xl border; }
+  code { @apply border-slate4 bg-slate3 text-slate11 mx-0.5 rounded-lg border p-0.5 px-1 text-base; }
+  .code { @apply text-wrap; }
+  .katex-html { @apply hidden; }
 
-  img {
-    @apply border-slate6 mx-auto my-8 w-full rounded-2xl border;
-  }
+  .block-default { @apply my-6 rounded-xl p-4; font-family: inherit; }
+  .block-default p { @apply text-slate12 my-0 text-base leading-relaxed; font-family: inherit; }
 
-  code {
-    @apply border-slate4 bg-slate3 text-slate11 mx-0.5 rounded-lg border p-0.5 px-1 text-base;
-  }
+  .tip { @apply border-indigo4 bg-indigo2 border; font-family: inherit; }
+  .tip .block-title { @apply text-indigo11 text-lg font-semibold; font-family: inherit; }
 
-  .code {
-    @apply text-wrap;
-  }
+  .warning { @apply border-orange4 bg-orange2 border; font-family: inherit; }
+  .warning .block-title { @apply text-orange11 text-lg font-semibold; font-family: inherit; }
 
-  .katex-html {
-    @apply hidden;
-  }
+  table { @apply ring-slate4 my-6 w-full border-collapse overflow-hidden rounded-xl ring-1; font-family: inherit; }
+  table thead { @apply border-slate4 bg-slate3 border-b text-left; }
+  table th, table td { @apply border-slate4 border-b px-4 py-3; }
 
-  .block-default {
-    @apply my-6 rounded-xl p-4;
-    font-family: inherit;
+  blockquote { @apply border-slate4 my-6 border-l-2 pl-4; font-family: inherit; }
+  blockquote p { @apply text-slate10 text-base leading-relaxed; font-family: inherit; }
 
-    p {
-      @apply text-slate12 my-0 text-base leading-relaxed;
-      font-family: inherit;
-    }
-  }
+  hr { @apply border-slate4 mx-auto my-12 w-1/3; }
 
-  .tip {
-    @apply border-indigo4 bg-indigo2 border;
-    font-family: inherit;
+  ul { @apply text-slate11 mt-2 mb-6 list-disc pl-4 text-base leading-relaxed; font-family: inherit; }
+  .task-list-item { @apply list-none; }
+  ul li::marker { @apply text-slate8; }
+  ol { @apply text-slate11 mt-2 mb-6 list-decimal pl-6 text-base leading-relaxed; font-family: inherit; }
+  ol li::marker { @apply text-slate8; }
+  li { @apply text-slate11 text-base leading-relaxed; font-family: inherit; }
 
-    .block-title {
-      @apply text-indigo11 text-lg font-semibold;
-      font-family: inherit;
-    }
-  }
+  figcaption { @apply text-slate8 -mt-4 text-center text-sm; font-family: inherit; }
+  .expressive-code { @apply mb-6; }
 
-  .warning {
-    @apply border-orange4 bg-orange2 border;
-    font-family: inherit;
-    .block-title {
-      @apply text-orange11 text-lg font-semibold;
-      font-family: inherit;
-    }
-  }
+  heti-spacing { @apply inline; }
+  .heti-spacing-start { @apply me-[0.25em]; }
+  .heti-spacing-end { @apply ms-[0.25em]; }
+  heti-adjacent { @apply inline; }
+  .heti-adjacent-half { @apply me-[-0.5em]; }
+  .heti-adjacent-quarter { @apply me-[-0.25em]; }
 
-  table {
-    @apply ring-slate4 my-6 w-full border-collapse overflow-hidden rounded-xl ring-1;
-    font-family: inherit;
-
-    thead {
-      @apply border-slate4 bg-slate3 border-b text-left;
-    }
-
-    th,
-    td {
-      @apply border-slate4 border-b px-4 py-3;
-    }
-  }
-
-  blockquote {
-    @apply border-slate4 my-6 border-l-2 pl-4;
-    font-family: inherit;
-
-    p {
-      @apply text-slate10 text-base leading-relaxed;
-      font-family: inherit;
-    }
-  }
-
-  hr {
-    @apply border-slate4 mx-auto my-12 w-1/3;
-  }
-
-  ul {
-    @apply text-slate11 mt-2 mb-6 list-disc pl-4 text-base leading-relaxed;
-    font-family: inherit;
-  }
-
-  .task-list-item {
-    @apply list-none;
-  }
-
-  ul li::marker {
-    @apply text-slate8;
-  }
-
-  ol {
-    @apply text-slate11 mt-2 mb-6 list-decimal pl-6 text-base leading-relaxed;
-    font-family: inherit;  }
-
-  li {
-    @apply text-slate11 text-base leading-relaxed;
-    font-family: inherit;
-  }
-
-  ol li::marker {
-    @apply text-slate8;
-  }
-
-  figcaption {
-    @apply text-slate8 -mt-4 text-center text-sm;
-    font-family: inherit;
-  }
-
-  .expressive-code {
-    @apply mb-6;
-  }
-
-  heti-spacing {
-    @apply inline;
-  }
-
-  .heti-spacing-start {
-    @apply me-[0.25em];
-  }
-
-  .heti-spacing-end {
-    @apply ms-[0.25em];
-  }
-
-  heti-adjacent {
-    @apply inline;
-  }
-
-  .heti-adjacent-half {
-    @apply me-[-0.5em];
-  }
-
-  .heti-adjacent-quarter {
-    @apply me-[-0.25em];
-  }
-
-  /* 合并重复的 @apply */
   .rehype-figure-container:has(> .rehype-figure:nth-child(2)),
   .rehype-figure-container:has(> .rehype-figure:nth-child(3)),
   .rehype-figure-container:has(> .rehype-figure:nth-child(4)),
   .rehype-figure-container:has(> .rehype-figure:nth-child(5)),
-  .rehype-figure-container:has(> .rehype-figure:nth-child(6)) {    @apply my-1.5;
-  }
+  .rehype-figure-container:has(> .rehype-figure:nth-child(6)) { @apply my-1.5; }
 
-  /* 图片分栏逻辑 */
   .rehype-figure-container:has(> .rehype-figure:nth-child(2)) { column-count: 2; column-gap: 8px; }
   .rehype-figure-container:has(> .rehype-figure:nth-child(3)) { column-count: 3; column-gap: 8px; }
   .rehype-figure-container:has(> .rehype-figure:nth-child(4)) { column-count: 4; column-gap: 8px; }
   .rehype-figure-container:has(> .rehype-figure:nth-child(5)) { column-count: 5; column-gap: 8px; }
-  /* 修复：6张图改为 3 栏（2行×3张），布局更均衡 */
   .rehype-figure-container:has(> .rehype-figure:nth-child(6)) { column-count: 3; column-gap: 8px; }
 
-  /* 处理图片显示 */
   .rehype-figure-container:has(> .rehype-figure:nth-child(2)) .rehype-figure,
   .rehype-figure-container:has(> .rehype-figure:nth-child(3)) .rehype-figure,
   .rehype-figure-container:has(> .rehype-figure:nth-child(4)) .rehype-figure,
   .rehype-figure-container:has(> .rehype-figure:nth-child(5)) .rehype-figure,
   .rehype-figure-container:has(> .rehype-figure:nth-child(6)) .rehype-figure {
     @apply relative mb-2 break-inside-avoid;
-
-    figcaption {
-      @apply absolute overflow-hidden overflow-ellipsis max-w-[calc(100%-16px)] bottom-2 right-2 bg-black/50 rounded-lg px-2 py-1 text-white;
-    }
+  }
+  
+  .rehype-figure-container:has(> .rehype-figure:nth-child(2)) .rehype-figure figcaption,
+  .rehype-figure-container:has(> .rehype-figure:nth-child(3)) .rehype-figure figcaption,
+  .rehype-figure-container:has(> .rehype-figure:nth-child(4)) .rehype-figure figcaption,
+  .rehype-figure-container:has(> .rehype-figure:nth-child(5)) .rehype-figure figcaption,
+  .rehype-figure-container:has(> .rehype-figure:nth-child(6)) .rehype-figure figcaption {
+    @apply absolute overflow-hidden overflow-ellipsis max-w-[calc(100%-16px)] bottom-2 right-2 bg-black/50 rounded-lg px-2 py-1 text-white;
   }
 
   .rehype-figure-container:has(> .rehype-figure:nth-child(2)) img,
@@ -225,12 +97,8 @@ article,
   .rehype-figure-container:has(> .rehype-figure:nth-child(6)) img {
     @apply m-0 border-slate6 rounded-2xl border;
   }
+  .rehype-figure-container:has(> .rehype-figure:nth-child(6)) .rehype-figure { @apply mb-2; }
 
-  .rehype-figure-container:has(> .rehype-figure:nth-child(6)) .rehype-figure {
-    @apply mb-2;
-  }
-
-  /* 响应式设计 */
   @media (max-width: 768px) {
     .rehype-figure-container:has(> .rehype-figure:nth-child(2)),
     .rehype-figure-container:has(> .rehype-figure:nth-child(3)),
@@ -241,4 +109,4 @@ article,
       column-gap: 0;
     }
   }
-} /* <--- 这是最外层的闭合括号，上次漏掉了这个！ */
+}
