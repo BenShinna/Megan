@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import i18next from '@/i18n';
 import Search from '@/components/search';
 import PageLayout from '@/components/layouts/PageLayout.astro';
-// import Button from '@/components/button';
 import slateConfig from '~@/slate.config';
 
 const postCollection = await getCollection('post', ({ data }) => {
@@ -16,24 +15,14 @@ const tagCounts = postCollection.reduce<Record<string, number>>(
     if (!postTags || !postTags.length) return res;
     postTags.forEach((tag) => {
       if (tag.trim() === '') return;
-
-      if (res[tag]) {
-        res[tag]++;
-      } else {
-        res[tag] = 1;
-      }
+      if (res[tag]) { res[tag]++; } else { res[tag] = 1; }
     });
     return res;
   },
-  {
-    [i18next.t('common.all')]: postCollection.length,
-  },
+  { [i18next.t('common.all')]: postCollection.length },
 );
 
-const tags = Object.keys(tagCounts).map((tag) => ({
-  name: tag,
-  count: tagCounts[tag],
-}));
+const tags = Object.keys(tagCounts).map((tag) => ({ name: tag, count: tagCounts[tag] }));
 
 const posts = [...postCollection]
   .sort((a, b) => {
@@ -47,73 +36,70 @@ const posts = [...postCollection]
     url: `/blog/${post.data.permalink || post.slug}`,
     data: post.data,
     displayDate: post.data.pubDate || post.data.published,
-  }));---
+  }));
+---
 
 <PageLayout>
-  <!-- 👇 这里把 mb-16 改成了 mb-8，gap-6 改成了 gap-4，间距更紧凑了 -->
+  <!-- 顶部区域布局 -->
   <section class="relative mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:mb-10">
     
     <div class="flex flex-col gap-3">
       
-      <!-- 胶囊 1：标题 (粉色圆点) -->
-      <div class="inline-flex w-fit items-center gap-2 rounded-full border border-slate6/30 bg-slate2 px-4 py-2 font-mono text-lg font-semibold text-slate12 shadow-sm transition-all hover:border-slate6/60 hover:shadow-md sm:px-5 sm:py-2.5 sm:text-2xl">
-        <span class="relative flex h-3 w-3 sm:h-3.5 sm:w-3.5">
+      <!--  胶囊 1：标题 (液态玻璃效果 - 粉色主题) -->
+      <div class="inline-flex w-fit items-center gap-2.5 rounded-2xl border border-white/40 bg-white/40 px-5 py-2.5 font-mono text-lg font-semibold text-slate12 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)] backdrop-blur-xl transition-all hover:bg-white/60 hover:shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:border-white/10 dark:bg-black/30 dark:text-slate2 dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] dark:hover:bg-black/50 sm:text-2xl">
+        <!-- 脉冲圆点 -->        <span class="relative flex h-3 w-3 sm:h-3.5 sm:w-3.5">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-3 w-3 sm:h-3.5 sm:w-3.5 bg-pink-500"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 sm:h-3.5 sm:w-3.5 bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.6)]"></span>
         </span>
-        <span class="text-pink-500 font-bold">~</span>
+        <span class="text-pink-500 font-bold drop-shadow-sm">~</span>
         <span class="tracking-wide">{slateConfig.title}</span>
-        <span class="text-slate8">$</span>
+        <span class="text-slate8 dark:text-slate10 font-light">$</span>
       </div>
 
-      <!-- 胶囊 2：描述 (蓝色圆点) -->
-      <div class="inline-flex w-fit items-center gap-2 rounded-full border border-slate6/30 bg-slate2 px-4 py-1.5 font-mono text-sm text-slate11 shadow-sm transition-all hover:border-slate6/60 hover:shadow-md sm:px-5 sm:py-2 sm:text-base">
-        <span class="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
+      <!-- 🧊 胶囊 2：描述 (液态玻璃效果 - 蓝色主题) -->
+      <div class="inline-flex w-fit items-center gap-2.5 rounded-2xl border border-white/40 bg-white/40 px-5 py-2 font-mono text-sm text-slate11 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)] backdrop-blur-xl transition-all hover:bg-white/60 hover:shadow-[0_8px_32px_0_rgba(0,0,0,0.1)] dark:border-white/10 dark:bg-black/30 dark:text-slate3 dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] dark:hover:bg-black/50 sm:text-base sm:py-2.5">
+        <!-- 脉冲圆点 -->
+        <span class="relative flex h-2.5 w-2.5 sm:h-3 sm:w-3">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-blue-500"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
         </span>
-        <span class="text-blue-500 font-bold">~</span>
+        <span class="text-blue-500 font-bold drop-shadow-sm">~</span>
         <span class="tracking-wide">{slateConfig.description}</span>
-        <span class="text-slate8">$</span>
+        <span class="text-slate8 dark:text-slate10 font-light">$</span>
       </div>
 
     </div>
 
+    <!-- 搜索框 -->
     <div class="w-full sm:w-auto sm:min-w-[240px]">
       <Search client:only="react" className="w-full sm:w-auto" />
     </div>
 
   </section>
 
+  <!-- 文章列表 -->
   <section class="mb-16">
     <div class="text-base text-slate12">
-      {
-        posts.map((item) => (
-          <a class="flex cursor-pointer flex-col justify-between rounded-lg py-2.5 transition-all active:scale-[0.995] active:bg-slate4 sm:flex-row sm:items-center sm:px-2 sm:hover:bg-slate3" href={item.url} title={item.data.title}>
-            <span class="shrink-0">{item.data.title}</span>
-            <span class="mx-8 hidden h-px w-full grow border-t border-dashed border-slate6 sm:flex" />
-            <span class="shrink-0 text-slate8">
-              {item.displayDate?.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',              })}
-            </span>
-          </a>
-        ))
-      }
+      {posts.map((item) => (
+        <a class="flex cursor-pointer flex-col justify-between rounded-lg py-2.5 transition-all active:scale-[0.995] active:bg-slate4 sm:flex-row sm:items-center sm:px-2 sm:hover:bg-slate3" href={item.url} title={item.data.title}>
+          <span class="shrink-0">{item.data.title}</span>
+          <span class="mx-8 hidden h-px w-full grow border-t border-dashed border-slate6 sm:flex" />
+          <span class="shrink-0 text-slate8">
+            {item.displayDate?.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+          </span>
+        </a>
+      ))}
     </div>
   </section>
 
+  <!-- 标签列表 -->
   <section class="mb-16">
     <ul class="flex flex-wrap gap-2 text-base text-slate10">
-      {
-        tags.map(({ name, count }) => (
-          <li class="block cursor-pointer rounded-full bg-slate3 px-4 py-2 text-slate10 transition-all hover:bg-slate4 hover:text-slate11">
-            {name}
-            <sup class="text-[10px] text-slate8">{count}</sup>
-          </li>
-        ))
-      }
+      {tags.map(({ name, count }) => (
+        <li class="block cursor-pointer rounded-full bg-slate3 px-4 py-2 text-slate10 transition-all hover:bg-slate4 hover:text-slate11">          {name}
+          <sup class="text-[10px] text-slate8">{count}</sup>
+        </li>
+      ))}
     </ul>
   </section>
 </PageLayout>
