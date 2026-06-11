@@ -92,20 +92,25 @@ const posts = [...postCollection]
     </div>
   </section>
 
-  <!-- 标签列表 - 已修复点击功能 -->
+  <!-- 标签列表 - 已修复点击功能，All 标签跳转到首页 -->
   <section class="mb-16">
     <ul class="flex flex-wrap gap-2 text-base text-slate10">
       {
-        tags.map(({ name, count }) => (          <li>
-            <a 
-              href={`/tags/${encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-'))}`}
-              class="block cursor-pointer rounded-full bg-slate3 px-4 py-2 text-slate10 transition-all hover:bg-slate4 hover:text-slate11"
-            >
-              {name}
-              <sup class="text-[10px] text-slate8">{count}</sup>
-            </a>
-          </li>
-        ))
+        tags.map(({ name, count }) => {          // 判断是否是 "All" 标签（包括翻译后的"全部"）
+          const isAllTag = name === i18next.t('common.all');
+          
+          return (
+            <li>
+              <a 
+                href={isAllTag ? '/' : `/tags/${encodeURIComponent(name.toLowerCase().replace(/\s+/g, '-'))}`}
+                class="block cursor-pointer rounded-full bg-slate3 px-4 py-2 text-slate10 transition-all hover:bg-slate4 hover:text-slate11"
+              >
+                {name}
+                <sup class="text-[10px] text-slate8">{count}</sup>
+              </a>
+            </li>
+          );
+        })
       }
     </ul>
   </section>
