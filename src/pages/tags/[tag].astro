@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@/components/layouts/PageLayout.astro';
+import slateConfig from '~@/slate.config';
+
+// 1. 告诉 Astro 有哪些标签需要生成页面
+export async function getStaticPaths() {
+  const posts = await getCollection('post', ({ data }) => {
+    return import.meta.env.DEV || data.draft !== true;
+  });
+  
+  const tags = new Set<string>();
+  posts.forEach(post => {
+    post.data.tags?.forEach(tag => tags.add(tag));
+  });
+
+  // 返回所有标签的路由参数
+  return Array.from(tags).map(tag => ({
+    params: { tag: tag.toLowerCase().replace(/\s+/g, '-') }, // URL 用的 slug
+    props: { tagName: tag }, // 传递给页面的实际标签名
+  }));
+}
+
+// 2. 获取当前页面的标签参数
+const { tag } = Astro.params;
+const { tagName } = Astro.props;
+
+// 3. 筛选出属于这个标签的所有文章
+const allPosts = await getCollection('post', ({ data }) => {
+  return (import.meta.env.DEV || data.draft !== true) && 
+         data.tags?.some(t => t.toLowerCase().replace(/\s+/g, '-') === tag);
+});
+
+const posts = allPosts.map(post => ({
+  url: `/blog/${post.data.permalink || post.slug}`,
+  data: post.data,
+  displayDate: post.data.pubDate || post.data.published,
+}));
+---
+
+<PageLayout title={`标签：${tagName}`}>
+  <section class="mb-16">
+    <!-- 页面标题 -->
+    <h1 class="mb-8 text-4xl font-bold text-slate12">
+      标签：<span class="text-pink-500">{tagName}</span>
+    </h1>
+    
+    <!-- 文章列表 -->
+    <div class="text-base text-slate12">
+      {posts.map((item) => (
+        <a class="flex cursor-pointer flex-col justify-between rounded-lg py-2.5 transition-all active:scale-[0.995] active:bg-slate4 sm:flex-row sm:items-center sm:px-2 sm:hover:bg-slate3" href={item.url} title={item.data.title}>
+          <span class="shrink-0">{item.data.title}</span>
+          <span class="mx-8 hidden h-px w-full grow border-t border-dashed border-slate6 sm:flex" />
+          <span class="shrink-0 text-slate8">
+            {item.displayDate?.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })}
+          </span>
+        </a>
+      ))}
+      
+      {posts.length === 0 && (
+        <p class="text-slate8">该标签下暂无文章。</p>
+      )}
+    </div>
+  </section>
+</PageLayout>
