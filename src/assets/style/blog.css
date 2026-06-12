@@ -192,7 +192,7 @@
     }
   }
 
-  /* ================= 新增样式 ================= */
+  /* ================= 新增自定义样式 ================= */
 
   /* 1. 剧透文本样式 (Spoiler) */  .spoiler {
     filter: blur(5px);
@@ -215,11 +215,57 @@
     background-color: transparent !important;
   }
 
-  /* 2. 自定义下划线文本样式 */
-  .underline-text {
+  /* 2. 红色光晕特效 (Red Glow) */
+  .red-glow {
+    display: inline-block;
+    padding: 2px 4px;
+    box-shadow: 
+      0 0 10px 5px rgba(255, 0, 0, 0.8),
+      0 0 20px 8px rgba(255, 0, 0, 0.6),
+      0 0 30px 12px rgba(255, 0, 0, 0.4);
+  }
+
+  /* 3. 优惠/折扣高亮 (Discount Highlight) */
+  .highlight-discount {
+    display: inline;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: #f8d7da;
+    color: #dc3545;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* 4. Bearblog 风格柔和高亮 (Bear Highlight) */
+  .highlight-bear {
+    display: inline;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: #EDEDEB;
+    color: #DE6E7A;
+    box-decoration-break: clone;    -webkit-box-decoration-break: clone;
+  }
+
+  /* 5. 红色粗下划线 (Underline) */
+  .highlight-underline {
     text-decoration: underline;
-    text-decoration-color: var(--link-color); /* 确保 common.css 或 :root 中定义了 --link-color */
-    text-underline-offset: 4px;
+    text-decoration-color: #dc3545;
     text-decoration-thickness: 2px;
+  }
+
+  /* 6. 原生 Mark 标签荧光笔效果 */
+  mark {
+    margin: 0 -0.4em;
+    padding: 0em 0.4em;
+    border-radius: 0.8em 0.3em;
+    background: transparent;
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 225, 0, 0.1),
+      rgba(255, 225, 0, 0.7) 4%,
+      rgba(255, 225, 0, 0.3)
+    );
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
 }
