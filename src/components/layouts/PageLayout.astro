@@ -59,5 +59,17 @@ const themeScript = `
         <Footer />
       </slot>
     </div>
+
+    <!-- 剧透文本点击揭晓交互 -->
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const spoilers = document.querySelectorAll('.spoiler');
+        spoilers.forEach(spoiler => {
+          spoiler.addEventListener('click', function() {
+            this.classList.toggle('revealed');
+          });
+        });
+      });
+    </script>
   </body>
 </html>
