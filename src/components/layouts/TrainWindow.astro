@@ -8,70 +8,60 @@ import trainSvg from "@/assets/train.svg?raw";
 </div>
 
 <style>
-.window{
-  flex:1;
-  height:150px;
-
-  position:relative;
-
-  background:#FDFCFA;
-  border-radius:24px;
-
-  overflow:hidden !important;
-  background-clip:padding-box;
-  -webkit-mask-image:-webkit-radial-gradient(white, black);
-
-  border:1px solid rgba(0,0,0,.05);
-  box-shadow:0 4px 20px rgba(0,0,0,.02);
+.window {
+  flex: 1;
+  height: 150px;
+  position: relative;
+  background: #FDFCFA;
+  border-radius: 24px;
+  overflow: hidden !important;
+  background-clip: padding-box;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  border: 1px solid rgba(0,0,0,.05);
+  box-shadow: 0 4px 20px rgba(0,0,0,.02);
 }
 
+/* 👇 核心：完全恢复原版参数，绝对不能动 left 和 top！ */
 .dennchuu {
   position: absolute;
+  width: 4200px;
+  height: 4200px;
+  left: -2050px; 
+  top: -300px;   /* 必须保持 -300px，这是不乱线的生命线！ */
   
-  /*  修改这里：从 -2400px 改成 -2000px 或 -1500px */
-  /* 目的是让大方块的中心往右移，覆盖住窗口的右侧 */
-  left: -2000px; 
-  
-  top: -30px; /* 保持你之前调好的位置 */
-  
-  width: 5000px;  /* 保持 5000px，不要改太大，否则线条会太粗 */
-  height: 5000px;
-  
-  animation: dennchuu 10s linear infinite;
+  transform-origin: center center;
+  will-change: transform;
+  animation: dennchuu 14s linear infinite;
 }
 
+/* 👇 解决偏上：在这里微调 SVG 的位置，而不是动外面的大方块 */
 .dennchuu :global(svg) {
   width: 100%;
   height: 100%;
   display: block;
+  
+  /* 如果觉得偏上，把这里的 40px 改大，比如 60px、80px */
+  /* 这样只移动里面的画，不改变旋转轨迹，绝对不会乱线！ */
+  margin-top: 50px; 
 }
 
-.curtain{
-  position:absolute;
-  inset:0;
-
-  background:#1c1c1c;
-
-  transform-origin:top;
-  animation:curtain 2s ease-in-out forwards;
+.curtain {
+  position: absolute;
+  inset: 0;
+  background: #1c1c1c;
+  transform-origin: top;
+  z-index: 3;
+  animation: curtain 1.8s ease-out forwards;
 }
 
-@keyframes dennchuu{
-  from{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
-  }
+@keyframes dennchuu {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-@keyframes curtain{
-  0%{
-    transform:scaleY(1);
-  }
-
-  100%{
-    transform:scaleY(0);
-  }
+@keyframes curtain {
+  0% { transform: scaleY(1); }
+  15% { transform: scaleY(0.95); }
+  100% { transform: scaleY(0); }
 }
 </style>
