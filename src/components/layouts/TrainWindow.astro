@@ -25,18 +25,21 @@ import trainSvg from "@/assets/train.svg?raw";
 .dennchuu{
   position:absolute;
 
-  width:4200px;
-  height:4200px;
+  /* 你原来能显示的尺寸 */
+  width:5000px;
+  height:5000px;
 
-  left:-1750px;
-  top:-2025px;
+  /* 关键 */
+  left:-2000px;
+  top:-30px;
 
   transform-origin:center center;
 
   will-change:transform;
   backface-visibility:hidden;
+  transform:translateZ(0);
 
-  animation:dennchuu 22s linear infinite;
+  animation:dennchuu 10s linear infinite;
 }
 
 .dennchuu :global(svg){
@@ -52,25 +55,25 @@ import trainSvg from "@/assets/train.svg?raw";
   background:#1c1c1c;
 
   transform-origin:top;
-  animation:curtain 1.8s ease forwards;
+  animation:curtain 2s ease-in-out forwards;
 }
 
 @keyframes dennchuu{
   from{
-    transform:rotate(0deg);
+    transform:translateZ(0) rotate(0deg);
   }
 
   to{
-    transform:rotate(360deg);
+    transform:translateZ(0) rotate(360deg);
   }
 }
 
 @keyframes curtain{
-  from{
+  0%{
     transform:scaleY(1);
   }
 
-  to{
+  100%{
     transform:scaleY(0);
   }
 }
