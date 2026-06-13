@@ -25,15 +25,18 @@ import trainSvg from "@/assets/train.svg?raw";
   box-shadow:0 4px 20px rgba(0,0,0,.02);
 }
 
-..dennchuu {
+.dennchuu {
   position: absolute;
-  left: -2400px;
   
-  /* 👇 修改这里：从 -75px 改为 0px 或 50px，让它往下移 */
-  top: -35px; 
+  /*  修改这里：从 -2400px 改成 -2000px 或 -1500px */
+  /* 目的是让大方块的中心往右移，覆盖住窗口的右侧 */
+  left: -2000px; 
   
-  width: 5000px;
+  top: -30px; /* 保持你之前调好的位置 */
+  
+  width: 5000px;  /* 保持 5000px，不要改太大，否则线条会太粗 */
   height: 5000px;
+  
   animation: dennchuu 10s linear infinite;
 }
 
@@ -41,10 +44,6 @@ import trainSvg from "@/assets/train.svg?raw";
   width: 100%;
   height: 100%;
   display: block;
-  
-  /* 👇 新增这一行：把图片往下挪，比如 40px 或 50px */
-  /* 你可以微调这个数值，直到电线在窗口里居中 */
-  margin-top: 45px; 
 }
 
 .curtain{
