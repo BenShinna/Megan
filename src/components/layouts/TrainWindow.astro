@@ -25,17 +25,17 @@ import trainSvg from "@/assets/train.svg?raw";
   box-shadow:0 4px 20px rgba(0,0,0,.02);
 }
 
-/* 关键 */
-.dennchuu{
-  position:absolute;
-
-  left:-2400px;
-  top:-35px;
-
-  width:5000px;
-  height:5000px;
-
-  animation:dennchuu 10s linear infinite;
+.dennchuu {
+  position: absolute;
+  
+  /* 👇 修改这里：把方块加大一倍，并调整位置保持中心点不变 */
+  left: -4900px;   /* 原 -2400px。计算：100(中心x) - 5000(新半径) */
+  top: -2530px;    /* 原 -30px。计算：2470(中心y) - 5000(新半径) */
+  
+  width: 10000px;  /* 原 5000px */
+  height: 10000px; /* 原 5000px */
+  
+  animation: dennchuu 10s linear infinite;
 }
 
 .dennchuu :global(svg){
