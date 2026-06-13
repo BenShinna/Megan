@@ -28,20 +28,30 @@ import trainSvg from "@/assets/train.svg?raw";
 .dennchuu {
   position: absolute;
   
-  /* 【核心修改】：利用 calc 配合 50% 保证旋转大容器的【几何中心】正好卡在窗口内部 */
-  /* 这样旋转的时候，圆环的弧度才会完美出现在窗口里 */
-  left: calc(50% - 2500px); 
-  top: calc(50% - 2500px); 
+  /* 1. 让大方块的【左上角】对准窗口的【正中心】 */
+  left: 50%;
+  top: 50%;
   
+  /* 2. 定义容器大小 */
   width: 5000px;  
   height: 5000px;
   
-  /* 确保旋转的轴心是在 5000px 大方块的正中央 */
-  transform-origin: center center; 
+  /* 3. 设置初始旋转和轴心偏移位置 */
+  transform-origin: center center;
+  transform: translate(-50%, -50%) translate3d(0, -1880px, 0) rotate(0deg);
   
   animation: dennchuu 10s linear infinite;
 }
 
+/* 【唯一保留的动画】必须带上平移位置，否则旋转时会大漂移 */
+@keyframes dennchuu {
+  from {
+    transform: translate(-50%, -50%) translate3d(0, -1880px, 0) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) translate3d(0, -1880px, 0) rotate(360deg);
+  }
+}
 
 .dennchuu :global(svg) {
   width: 100%;
@@ -59,20 +69,12 @@ import trainSvg from "@/assets/train.svg?raw";
   animation:curtain 2s ease-in-out forwards;
 }
 
-@keyframes dennchuu{
-  from{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
-  }
-}
+/* ⚠️ 这里删除了原本冲突的第二个 @keyframes dennchuu */
 
 @keyframes curtain{
   0%{
     transform:scaleY(1);
   }
-
   100%{
     transform:scaleY(0);
   }
