@@ -28,29 +28,16 @@ import trainSvg from "@/assets/train.svg?raw";
 .dennchuu {
   position: absolute;
   
-  /* 1. 让大方块的【左上角】对准窗口的【正中心】 */
-  left: 50%;
-  top: 50%;
+  /*  修改这里：从 -2400px 改成 -2000px 或 -1500px */
+  /* 目的是让大方块的中心往右移，覆盖住窗口的右侧 */
+  left: -2000px; 
   
-  /* 2. 定义容器大小 */
-  width: 5000px;  
+  top: -30px; /* 保持你之前调好的位置 */
+  
+  width: 5000px;  /* 保持 5000px，不要改太大，否则线条会太粗 */
   height: 5000px;
   
-  /* 3. 设置初始旋转和轴心偏移位置 */
-  transform-origin: center center;
-  transform: translate(-50%, -50%) translate3d(0, -1880px, 0) rotate(0deg);
-  
   animation: dennchuu 10s linear infinite;
-}
-
-/* 【唯一保留的动画】必须带上平移位置，否则旋转时会大漂移 */
-@keyframes dennchuu {
-  from {
-    transform: translate(-50%, -50%) translate3d(0, -1880px, 0) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) translate3d(0, -1880px, 0) rotate(360deg);
-  }
 }
 
 .dennchuu :global(svg) {
@@ -69,12 +56,20 @@ import trainSvg from "@/assets/train.svg?raw";
   animation:curtain 2s ease-in-out forwards;
 }
 
-/* ⚠️ 这里删除了原本冲突的第二个 @keyframes dennchuu */
+@keyframes dennchuu{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
+}
 
 @keyframes curtain{
   0%{
     transform:scaleY(1);
   }
+
   100%{
     transform:scaleY(0);
   }
