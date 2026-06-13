@@ -1,0 +1,107 @@
+---
+import trainSvg from "@/assets/train.svg?raw";
+---
+
+<div class="window">
+  <div class="dennchuu" set:html={trainSvg}></div>
+  <div class="curtain"></div>
+</div>
+
+<style>
+.window{
+  flex:1;
+  height:150px;
+
+  position:relative;
+  overflow:hidden;
+
+  background:#FDFCFA;
+  border-radius:24px;
+
+  border:1px solid rgba(0,0,0,.05);
+
+  box-shadow:
+    0 4px 20px rgba(0,0,0,.02),
+    0 1px 2px rgba(0,0,0,.03);
+}
+
+/* 玻璃高光 */
+.window::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.55) 0%,
+      rgba(255,255,255,.18) 25%,
+      transparent 50%
+    );
+
+  pointer-events:none;
+  z-index:2;
+}
+
+/* 核心 */
+.dennchuu{
+  position:absolute;
+
+  width:4200px;
+  height:4200px;
+
+  /* 比原来略微下移 */
+  left:-2050px;
+  top:-300px;
+
+  transform-origin:center center;
+
+  will-change:transform;
+
+  animation:dennchuu 14s linear infinite;
+}
+
+.dennchuu :global(svg){
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* 开场窗帘 */
+.curtain{
+  position:absolute;
+  inset:0;
+
+  background:#1c1c1c;
+
+  transform-origin:top;
+
+  animation:curtain 1.8s ease-out forwards;
+
+  z-index:3;
+}
+
+@keyframes dennchuu{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+@keyframes curtain{
+  0%{
+    transform:scaleY(1);
+  }
+
+  15%{
+    transform:scaleY(.95);
+  }
+
+  100%{
+    transform:scaleY(0);
+  }
+}
+</style>

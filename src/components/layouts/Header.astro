@@ -1,11 +1,7 @@
 ---
-import slateConfig from '~@/slate.config';
-import Avatar from '../Avatar/Avatar.astro';
-
-interface Props {
-  avatar?: string;
-  avatarBack?: string;
-}
+import slateConfig from "~@/slate.config";
+import Avatar from "../Avatar/Avatar.astro";
+import TrainWindow from "./TrainWindow.astro";
 
 const {
   avatar = slateConfig.avatar!,
@@ -13,8 +9,8 @@ const {
 } = Astro.props;
 ---
 
-<header>
-  <div class="mb-9">
+<header class="header-container mb-9">
+  <div class="avatar-wrapper">
     <Avatar
       frontSrc={avatar}
       backSrc={avatarBack}
@@ -22,4 +18,18 @@ const {
       size={56}
     />
   </div>
+
+  <TrainWindow />
 </header>
+
+<style>
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar-wrapper {
+  flex-shrink: 0;
+}
+</style>
