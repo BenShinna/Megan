@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4088 4105" width="100%" height="100%">
   <style>
-    .pure-sketch {
+    .clean-sketch {
       fill: none;
       stroke: #2b2645;
       stroke-linecap: round;
@@ -14,27 +14,27 @@
     }
   </style>
 
-  <g id="purified-loops">
-    <path class="pure-sketch" stroke-width="4.2" opacity="0.78" 
+  <g id="purified-hand-drawn-loops">
+    <path class="clean-sketch" stroke-width="4.2" opacity="0.78" 
           d="M 2035,56 C 3130,56 4016,927 4016,2052 C 4016,3177 3130,4048 2035,4048 C 940,4048 72,3177 72,2052 C 72,927 940,56 2035,56 Z" />
     
-    <path class="pure-sketch" stroke-width="5.3" opacity="0.82" 
+    <path class="clean-sketch" stroke-width="5.3" opacity="0.82" 
           d="M 2044,82 C 3110,82 3970,930 3970,2052 C 3970,3174 3110,4012 2044,4012 C 978,4012 128,3174 128,2052 C 128,930 978,82 2044,82 Z" />
     
-    <path class="pure-sketch" stroke-width="6.2" opacity="0.85" 
+    <path class="clean-sketch" stroke-width="6.2" opacity="0.85" 
           d="M 2055,42 C 3145,42 4032,915 4032,2052 C 4032,3189 3145,4062 2055,4062 C 965,4062 82,3189 82,2052 C 82,915 965,42 2055,42 Z" />
     
-    <path class="pure-sketch" stroke-width="4.8" opacity="0.72" 
+    <path class="clean-sketch" stroke-width="4.8" opacity="0.72" 
           d="M 2028,96 C 3095,96 3952,945 3952,2052 C 3952,3159 3095,4002 2028,4002 C 1506,4002 112,3159 112,2052 C 112,945 1506,96 2028,96 Z" />
     
-    <path class="pure-sketch" stroke-width="5.0" opacity="0.79" 
+    <path class="clean-sketch" stroke-width="5.0" opacity="0.79" 
           d="M 2062,32 C 3160,32 4050,905 4050,2052 C 4050,3199 3160,4072 2062,4072 C 964,4072 68,3199 68,2052 C 68,905 964,32 2062,32 Z" />
     
-    <path class="pure-sketch" stroke-width="4.0" opacity="0.68" 
-          d="M 1998,14 C 3120,14 4076,900 4076,2030 C 4076,2600 3510,3570 1998,3570 C 500,3570 22,2600 22,2300 C 22,1460 890,14 1998,14 Z" />
+    <path class="clean-sketch" stroke-width="4.0" opacity="0.68" 
+          d="M 1998,14 C 3120,14 4076,900 4076,2030 C 4076,3160 3120,4066 1998,4066 C 876,4066 22,3160 22,2030 C 22,900 876,14 1998,14 Z" />
     
-    <path class="pure-sketch" stroke-width="5.6" opacity="0.74" 
-          d="M 2080,62 C 3170,62 4002,925 4002,2065 C 4002,2640 3550,3585 2080,3585 C 620,3585 152,3205 152,2065 C 152,1490 1000,62 2080,62 Z" />
+    <path class="clean-sketch" stroke-width="5.6" opacity="0.74" 
+          d="M 2080,62 C 3170,62 4002,925 4002,2065 C 4002,3205 3170,4068 2080,4068 C 990,4068 152,3205 152,2065 C 152,925 990,62 2080,62 Z" />
   </g>
 
   <g id="original-ticks">
