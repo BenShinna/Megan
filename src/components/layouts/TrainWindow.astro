@@ -11,31 +11,33 @@ import trainSvg from "@/assets/train.svg?raw";
 .window{
   flex:1;
   height:150px;
-
   position:relative;
-
   background:#FDFCFA;
   border-radius:24px;
-
   overflow:hidden !important;
   background-clip:padding-box;
   -webkit-mask-image:-webkit-radial-gradient(white, black);
-
   border:1px solid rgba(0,0,0,.05);
   box-shadow:0 4px 20px rgba(0,0,0,.02);
 }
 
+/* 👇 核心修复：使用真实尺寸 + 锁定真实圆心 */
 .dennchuu {
   position: absolute;
   
-  /*  修改这里：从 -2400px 改成 -2000px 或 -1500px */
-  /* 目的是让大方块的中心往右移，覆盖住窗口的右侧 */
-  left: -2000px; 
-  
-  top: -30px; /* 保持你之前调好的位置 */
-  
-  width: 5000px;  /* 保持 5000px，不要改太大，否则线条会太粗 */
-  height: 5000px;
+  /* 1. 使用 SVG 的原始 viewBox 尺寸，保证 1:1 绝不拉伸 */
+  width: 4089px;
+  height: 4106px;
+
+  /* 2. 定位：将 SVG 的真实圆心，放到窗口左侧 1800px，垂直居中的位置 */
+  /* 计算公式：left = 目标X(-1800) - 圆心X(2044) = -3844 */
+  left: -3844px;
+  /* 计算公式：top = 目标Y(75) - 圆心Y(2053) = -1978 */
+  top: -1978px;
+
+  /* 3. 灵魂魔法：强制绕着 SVG 的真实圆心旋转！ */
+  /* 这样无论怎么转，都是完美的同心圆，绝对不会有任何抖动、断裂或折线！ */
+  transform-origin: 2044px 2053px;
   
   animation: dennchuu 10s linear infinite;
 }
@@ -49,29 +51,18 @@ import trainSvg from "@/assets/train.svg?raw";
 .curtain{
   position:absolute;
   inset:0;
-
   background:#1c1c1c;
-
   transform-origin:top;
   animation:curtain 2s ease-in-out forwards;
 }
 
 @keyframes dennchuu{
-  from{
-    transform:rotate(0deg);
-  }
-  to{
-    transform:rotate(360deg);
-  }
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
 }
 
 @keyframes curtain{
-  0%{
-    transform:scaleY(1);
-  }
-
-  100%{
-    transform:scaleY(0);
-  }
+  0%{ transform:scaleY(1); }
+  100%{ transform:scaleY(0); }
 }
 </style>
