@@ -28,17 +28,20 @@ import trainSvg from "@/assets/train.svg?raw";
 .dennchuu {
   position: absolute;
   
-  /*  修改这里：从 -2400px 改成 -2000px 或 -1500px */
-  /* 目的是让大方块的中心往右移，覆盖住窗口的右侧 */
-  left: -2000px; 
+  /* 【核心修改】：利用 calc 配合 50% 保证旋转大容器的【几何中心】正好卡在窗口内部 */
+  /* 这样旋转的时候，圆环的弧度才会完美出现在窗口里 */
+  left: calc(50% - 2500px); 
+  top: calc(50% - 2500px); 
   
-  top: -30px; /* 保持你之前调好的位置 */
-  
-  width: 5000px;  /* 保持 5000px，不要改太大，否则线条会太粗 */
+  width: 5000px;  
   height: 5000px;
+  
+  /* 确保旋转的轴心是在 5000px 大方块的正中央 */
+  transform-origin: center center; 
   
   animation: dennchuu 10s linear infinite;
 }
+
 
 .dennchuu :global(svg) {
   width: 100%;
