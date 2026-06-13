@@ -8,60 +8,61 @@ import trainSvg from "@/assets/train.svg?raw";
 </div>
 
 <style>
-.window {
-  flex: 1;
-  height: 150px;
-  position: relative;
-  background: #FDFCFA;
-  border-radius: 24px;
-  overflow: hidden !important;
-  background-clip: padding-box;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  border: 1px solid rgba(0,0,0,.05);
-  box-shadow: 0 4px 20px rgba(0,0,0,.02);
+.window{
+  flex:1;
+  height:150px;
+  position:relative;
+  background:#FDFCFA;
+  border-radius:24px;
+  overflow:hidden !important;
+  background-clip:padding-box;
+  -webkit-mask-image:-webkit-radial-gradient(white, black);
+  border:1px solid rgba(0,0,0,.05);
+  box-shadow:0 4px 20px rgba(0,0,0,.02);
 }
 
-/* 👇 核心：完全恢复原版参数，绝对不能动 left 和 top！ */
+/* 👇 核心修复：使用真实尺寸 + 锁定真实圆心 */
 .dennchuu {
   position: absolute;
-  width: 4200px;
-  height: 4200px;
-  left: -2050px; 
-  top: -300px;   /* 必须保持 -300px，这是不乱线的生命线！ */
   
-  transform-origin: center center;
-  will-change: transform;
-  animation: dennchuu 14s linear infinite;
+  /* 1. 使用 SVG 的原始 viewBox 尺寸，保证 1:1 绝不拉伸 */
+  width: 4089px;
+  height: 4106px;
+
+  /* 2. 定位：将 SVG 的真实圆心，放到窗口左侧 1800px，垂直居中的位置 */
+  /* 计算公式：left = 目标X(-1800) - 圆心X(2044) = -3844 */
+  left: -3844px;
+  /* 计算公式：top = 目标Y(75) - 圆心Y(2053) = -1978 */
+  top: -1978px;
+
+  /* 3. 灵魂魔法：强制绕着 SVG 的真实圆心旋转！ */
+  /* 这样无论怎么转，都是完美的同心圆，绝对不会有任何抖动、断裂或折线！ */
+  transform-origin: 2044px 2053px;
+  
+  animation: dennchuu 10s linear infinite;
 }
 
-/* 👇 解决偏上：在这里微调 SVG 的位置，而不是动外面的大方块 */
 .dennchuu :global(svg) {
   width: 100%;
   height: 100%;
   display: block;
-  
-  /* 如果觉得偏上，把这里的 40px 改大，比如 60px、80px */
-  /* 这样只移动里面的画，不改变旋转轨迹，绝对不会乱线！ */
-  margin-top: 50px; 
 }
 
-.curtain {
-  position: absolute;
-  inset: 0;
-  background: #1c1c1c;
-  transform-origin: top;
-  z-index: 3;
-  animation: curtain 1.8s ease-out forwards;
+.curtain{
+  position:absolute;
+  inset:0;
+  background:#1c1c1c;
+  transform-origin:top;
+  animation:curtain 2s ease-in-out forwards;
 }
 
-@keyframes dennchuu {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes dennchuu{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
 }
 
-@keyframes curtain {
-  0% { transform: scaleY(1); }
-  15% { transform: scaleY(0.95); }
-  100% { transform: scaleY(0); }
+@keyframes curtain{
+  0%{ transform:scaleY(1); }
+  100%{ transform:scaleY(0); }
 }
 </style>
