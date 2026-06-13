@@ -25,10 +25,12 @@ import trainSvg from "@/assets/train.svg?raw";
   box-shadow:0 4px 20px rgba(0,0,0,.02);
 }
 
-.dennchuu {
+..dennchuu {
   position: absolute;
-  left: -2400px;  /* 恢复原值，让旋转中心远离窗口 */
-  top: -75px;     /* 恢复原值，保证窗口在圆的边缘，线条才是直的 */
+  left: -2400px;
+  
+  /* 👇 修改这里：从 -75px 改为 0px 或 50px，让它往下移 */
+  top: -35px; 
   
   width: 5000px;
   height: 5000px;
