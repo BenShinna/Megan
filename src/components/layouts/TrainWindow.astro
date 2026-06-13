@@ -13,53 +13,29 @@ import trainSvg from "@/assets/train.svg?raw";
   height:150px;
 
   position:relative;
-  overflow:hidden;
 
   background:#FDFCFA;
   border-radius:24px;
 
+  overflow:hidden !important;
+  background-clip:padding-box;
+  -webkit-mask-image:-webkit-radial-gradient(white, black);
+
   border:1px solid rgba(0,0,0,.05);
-
-  box-shadow:
-    0 4px 20px rgba(0,0,0,.02),
-    0 1px 2px rgba(0,0,0,.03);
+  box-shadow:0 4px 20px rgba(0,0,0,.02);
 }
 
-/* 玻璃高光 */
-.window::before{
-  content:"";
-
-  position:absolute;
-  inset:0;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.55) 0%,
-      rgba(255,255,255,.18) 25%,
-      transparent 50%
-    );
-
-  pointer-events:none;
-  z-index:2;
-}
-
-/* 核心 */
+/* 关键 */
 .dennchuu{
   position:absolute;
 
-  width:4200px;
-  height:4200px;
+  left:-2400px;
+  top:-75px;
 
-  /* 比原来略微下移 */
-  left:-2050px;
-  top:-300px;
+  width:5000px;
+  height:5000px;
 
-  transform-origin:center center;
-
-  will-change:transform;
-
-  animation:dennchuu 14s linear infinite;
+  animation:dennchuu 10s linear infinite;
 }
 
 .dennchuu :global(svg){
@@ -68,7 +44,6 @@ import trainSvg from "@/assets/train.svg?raw";
   display:block;
 }
 
-/* 开场窗帘 */
 .curtain{
   position:absolute;
   inset:0;
@@ -76,10 +51,7 @@ import trainSvg from "@/assets/train.svg?raw";
   background:#1c1c1c;
 
   transform-origin:top;
-
-  animation:curtain 1.8s ease-out forwards;
-
-  z-index:3;
+  animation:curtain 2s ease-in-out forwards;
 }
 
 @keyframes dennchuu{
@@ -94,10 +66,6 @@ import trainSvg from "@/assets/train.svg?raw";
 @keyframes curtain{
   0%{
     transform:scaleY(1);
-  }
-
-  15%{
-    transform:scaleY(.95);
   }
 
   100%{
