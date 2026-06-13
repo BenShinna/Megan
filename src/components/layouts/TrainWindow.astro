@@ -28,12 +28,14 @@ import trainSvg from "@/assets/train.svg?raw";
 .dennchuu {
   position: absolute;
   
-  /* 👇 修改这里：把方块加大一倍，并调整位置保持中心点不变 */
-  left: -4900px;   /* 原 -2400px。计算：100(中心x) - 5000(新半径) */
-  top: -2530px;    /* 原 -30px。计算：2470(中心y) - 5000(新半径) */
+  /*  修改这里：从 -2400px 改成 -2000px 或 -1500px */
+  /* 目的是让大方块的中心往右移，覆盖住窗口的右侧 */
+  left: -2000px; 
   
-  width: 10000px;  /* 原 5000px */
-  height: 10000px; /* 原 5000px */
+  top: -30px; /* 保持你之前调好的位置 */
+  
+  width: 5000px;  /* 保持 5000px，不要改太大，否则线条会太粗 */
+  height: 5000px;
   
   animation: dennchuu 10s linear infinite;
 }
