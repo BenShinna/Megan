@@ -48,6 +48,11 @@ import trainSvg from "@/assets/train.svg?raw";
   display:block;
 }
 
+/* 新增：强制加粗 SVG 内部所有元素的线条 */
+.dennchuu :global(svg) * {
+  stroke-width: 4px !important; /* 你可以调整这个数值，比如 2px, 4px, 8px 等 */
+}
+
 .curtain{
   position:absolute;
   inset:0;
