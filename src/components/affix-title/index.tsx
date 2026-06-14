@@ -1,97 +1,68 @@
----
-import dayjs from 'dayjs';
-import { type CollectionEntry, getCollection } from 'astro:content';
-import i18next from '@/i18n';
-import PageLayout from '@/components/layouts/PageLayout.astro';
-import ArticleJsonLd from '@/components/json-ld/article.astro';
-import Button from '@/components/button';
-import AffixTitle from '@/components/affix-title/index.tsx';
-import Toc from '@/components/toc';
-import CodeGroupEvent from '@/components/code-group-event';
-import slateConfig from '~@/slate.config';
-import { getFullTitle } from '@/helpers/utils';
-import 'remark-block-containers/css';
-import '@/assets/style/blog.css';
+import { useEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
 
-export async function getStaticPaths() {
-	const postEntries = await getCollection('post', ({ data }) => {
-		return import.meta.env.DEV || data.draft !== true;
-	});
-
-	return postEntries.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}));
+export interface AffixTitleProps {
+  /** 距离窗口顶部达到指定偏移量后触发, 默认 320 */
+  offsetTop?: number;
+  title: string;
 }
 
-type Props = CollectionEntry<'post'>;
+const AffixTitle = (props: AffixTitleProps) => {
+  const { title, offsetTop = 320 } = props;
+  const affixTitleRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
-const post = Astro.props;
-const { Content, remarkPluginFrontmatter, headings } = await post.render();
+  // 1. 外层容器：只负责定位、层级和整体的滑入/淡入动画
+  const containerClasses = classNames(
+    'fixed left-0 right-0 top-0 w-full transition-all duration-300 ease-in-out z-10',
+    isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0',
+  );
 
-const { title, date, description, lang, cover, tags } = post.data;
-const t = await i18next.getFixedT(lang || 'en')();
+  // 2. 背景层：专门负责 iOS 风格的 Progressive Blur (渐进模糊)
+  const blurClasses = classNames(
+    'absolute inset-0 z-0 pointer-events-none',
+    'backdrop-blur-md bg-slate1/80', 
+    // 核心：使用 mask-image 实现从上到下的渐变消散
+    '[mask-image:linear-gradient(to_bottom,black_0%,black_40%,transparent_100%)]',
+    '[-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_40%,transparent_100%)]' 
+  );
 
-const postDate = dayjs(date).format('YYYY-MM-DD');
-const fullTitle = getFullTitle(title, t('site.title'));
-const postUrl = `${slateConfig.site.url}/blog/${post.slug}`;
----
+  const handleScroll = () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    setIsVisible(scrollTop >= offsetTop);
+  };
 
-<PageLayout title={fullTitle} description={description} lang={lang} cover={cover}>
-	{/* SEO Meta Tags */}
-	<meta property="og:title" content={fullTitle} />
-	<meta property="og:description" content={description} />
-	<meta property="og:url" content={postUrl} />
-	<meta property="og:type" content="article" />
-	<meta property="article:published_time" content={postDate} />
-	{tags && tags.length > 0 && (
-		<meta property="article:tag" content={tags.join(', ')} />
-	)}
+  useEffect(() => {
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
-	{/* JSON-LD */}
-	<ArticleJsonLd title={title} description={description} date={date} cover={cover} tags={tags} />
+  return (
+    <div ref={affixTitleRef} className={containerClasses}>
+      
+      {/* 🎨 Progressive Blur 背景层 */}
+      <div className={blurClasses} />
+      
+      {/* 📝 实际内容层 (必须在模糊层之上，保持清晰) */}
+      <div className="relative z-10 mx-auto flex items-center justify-between px-4 max-w-180">
+        <button
+          onClick={() => window.location.href = '/'}
+          className="text-slate11 hover:text-slate12 transition-colors w-8 cursor-pointer active:scale-95 rounded-full h-6 flex items-center justify-center hover:bg-slate12/5"
+        >
+          ←
+        </button>
+        
+        <div className="py-4 font-bold truncate">{title}</div>
+        
+        <div className="w-4" />
+      </div>
+      
+    </div>
+  );
+};
 
-	<article class="mx-auto max-w-180 px-4">
-		{/* Affix Title - Fixed version with explicit type */}
-		<AffixTitle client:idle title={title} offsetTop={100} />
-
-		<header class="mb-8 pt-20">
-			<h1 class="mb-4 text-3xl font-bold">{title}</h1>
-			<div class="flex items-center gap-2 text-sm text-gray-500">
-				<time datetime={postDate}>{postDate}</time>
-				{tags && tags.length > 0 && (
-					<>
-						<span>·</span>
-						<div class="flex gap-2">
-							{tags.map((tag) => (
-								<a href={`/tags/${tag}`} class="hover:underline">
-									{tag}
-								</a>
-							))}
-						</div>
-					</>
-				)}
-			</div>
-		</header>
-
-		<div class="relative">
-			{/* Table of Contents */}
-			<Toc headings={headings} />
-
-			{/* Post Content */}
-			<div class="prose prose-slate dark:prose-invert max-w-none">
-				<Content />
-			</div>
-
-			{/* Code Group Event Listener */}
-			<CodeGroupEvent />
-		</div>
-
-		{/* Navigation Buttons */}
-		<nav class="mt-12 flex justify-between border-t border-gray-200 pt-8 dark:border-gray-700">
-			<Button href="/" variant="secondary">
-				← {t('common.backToHome')}
-			</Button>
-		</nav>
-	</article>
-</PageLayout>
+export default AffixTitle;
